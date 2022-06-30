@@ -1,4 +1,4 @@
-async function populate() {
+/* async function populate() {
 
       const requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
       const request = new Request(requestURL);
@@ -11,7 +11,7 @@ async function populate() {
 	  console.log(superHeroes.members);
 	}
 populate();
-
+ */
 
 
 function readFile(input) {
@@ -22,17 +22,13 @@ function readFile(input) {
   reader.readAsText(file);
 
   reader.onload = function() {
-    console.log(typeof(reader.result));
+	var data = JSON.parse(reader.result);
+    console.log(data);
+	//draw(heroes);
 	//console.log(reader.result);
   };
 
   reader.onerror = function() {
     console.log(reader.error);
   };
-}
-function print(result) {
-		for (var i = 0; i < jsonData.squadName.length; i++) {
-		var counter = jsonData.squadName[i];
-		console.log(homeTown);
-	}
 }

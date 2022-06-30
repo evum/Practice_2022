@@ -1,0 +1,191 @@
+{
+    "rules": [{
+        "rules": [{
+            "out": "state",
+            "value": "[2, 3]",
+            "operator": "in",
+            "subalert": "rtn-subalert",
+            "id": "1",
+            "field": "давление1",
+            "type": "string"
+        }, {
+            "out": "state",
+            "operator": "in",
+            "value": "[2, 3]",
+            "subalert": "rtn-subalert",
+            "id": "2",
+            "type": "string",
+            "field": "давление2"
+        }, {
+            "out": "state",
+            "value": "[2, 3]",
+            "operator": "in",
+            "subalert": "rtn-subalert",
+            "type": "string",
+            "field": "давление3",
+            "id": "3"
+        }, {
+            "subalert": "rtn-subalert",
+            "id": "4",
+            "field": "давление4",
+            "type": "string",
+            "out": "state",
+            "operator": "in",
+            "value": "[2, 3]"
+        }, {
+            "value": "[2, 3]",
+            "operator": "in",
+            "out": "state",
+            "id": "5",
+            "field": "давление5",
+            "type": "string",
+            "subalert": "rtn-subalert"
+        }, {
+            "subalert": "rtn-subalert",
+            "field": "давление6",
+            "type": "string",
+            "id": "6",
+            "out": "state",
+            "operator": "in",
+            "value": "[2, 3]"
+        }, {
+            "out": "state",
+            "value": "[2, 3]",
+            "operator": "in",
+            "subalert": "rtn-subalert",
+            "id": "7",
+            "field": "давление7",
+            "type": "string"
+        }, {
+            "type": "string",
+            "field": "давление8",
+            "id": "8",
+            "subalert": "rtn-subalert",
+            "operator": "in",
+            "value": "[2, 3]",
+            "out": "state"
+        }],
+        "condition": "OR"
+    }, {
+        "condition": "OR",
+        "rules": [{
+            "field": "разрушение Двигатель",
+            "type": "string",
+            "id": "9",
+            "subalert": "cpr-current-state",
+            "value": "1",
+            "operator": "==",
+            "out": "state"
+        }, {
+            "rules": [{
+                "condition": "OR",
+                "rules": [{
+                    "subalert": "rtn-subalert",
+                    "field": "температура1",
+                    "type": "string",
+                    "id": "10",
+                    "out": "state",
+                    "operator": "in",
+                    "value": "[2, 3, 5]"
+                }, {
+                    "condition": "OR",
+                    "rules": [{
+                        "rules": [{
+                            "rules": [{
+                                "operator": "==",
+                                "value": "0",
+                                "out": "value",
+                                "id": "11",
+                                "type": "string",
+                                "field": "давление9",
+                                "subalert": "rtn-subalert"
+                            }, {
+                                "operator": "==",
+                                "value": "1",
+                                "out": "value",
+                                "id": "12",
+                                "type": "string",
+                                "field": "давление10",
+                                "subalert": "rtn-subalert"
+                            }],
+                            "condition": "AND"
+                        }, {
+                            "rules": [{
+                                "value": "300",
+                                "operator": "<",
+                                "out": "value",
+                                "id": "13",
+                                "field": "температура2",
+                                "type": "string",
+                                "subalert": "rtn-subalert"
+                            }, {
+                                "operator": "<",
+                                "value": "300",
+                                "out": "value",
+                                "id": "14",
+                                "field": "температура3",
+                                "type": "string",
+                                "subalert": "rtn-subalert"
+                            }],
+                            "condition": "AND"
+                        }, {
+                            "type": "string",
+                            "field": "давление11",
+                            "id": "15",
+                            "subalert": "rtn-subalert",
+                            "operator": "<",
+                            "value": "120",
+                            "out": "value"
+                        }],
+                        "condition": "OR"
+                    }, {
+                        "condition": "OR",
+                        "rules": [{
+                            "field": "температура4",
+                            "type": "string",
+                            "id": "16",
+                            "subalert": "rtn-subalert",
+                            "operator": ">",
+                            "value": "87",
+                            "out": "value"
+                        }, {
+                            "out": "value",
+                            "operator": ">",
+                            "value": "87",
+                            "subalert": "rtn-subalert",
+                            "type": "string",
+                            "field": "температура5",
+                            "id": "17"
+                        }, {
+                            "subalert": "rtn-subalert",
+                            "id": "18",
+                            "type": "string",
+                            "field": "температура6",
+                            "out": "value",
+                            "value": "80",
+                            "operator": ">"
+                        }, {
+                            "out": "value",
+                            "value": "8.5",
+                            "operator": ">",
+                            "subalert": "rtn-subalert",
+                            "field": "давление7",
+                            "type": "string",
+                            "id": "19"
+                        }, {
+                            "out": "value",
+                            "operator": ">",
+                            "value": "8.5",
+                            "subalert": "rtn-subalert",
+                            "type": "string",
+                            "field": "давление8",
+                            "id": "20"
+                        }]
+                    }]
+                }]
+            }],
+            "condition": "AND"
+        }]
+    }],
+    "condition": "AND"
+}
