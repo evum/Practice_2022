@@ -8,8 +8,11 @@
 <style>
   text-align: center;
 }
-.name {
-	font-weight: bold;
+.node {
+	fill: blue;
+	border: solid 1px black; /* Параметры рамки */
+	width: 30px; /* Ширина блока */
+    height: 2px; /* Высота блока */
 }
 
 .link {
@@ -19,12 +22,32 @@
 }
 
 .dat {
-	outline: 1px solid #000;
+	overflow: auto; 
+	width:100px; 
+	height:30px; 
+	padding: 1px;
+	border: solid 1px black;
+	text-align: center;
+	x: 10;
+	y: -15;
+}
+
+.divClass {
+	overflow: auto;
+	width:10px;
+	height:20px;
+	padding: 5px;
+	border: solid 1px black;
 }
 .cond {
-	outline: 1px solid green;
+	width:40px;
+	height:30px;
+	padding: 1px;
+	border: solid 1px black;
 	border-radius: 100px;
-
+	text-align: center;
+	x: -20;
+	y: -10;
 }
 
 </style>
@@ -34,14 +57,14 @@
 <script>
 
 const lineLenght = 9
-const margin = { top: 10, right: 320, bottom: 0, left: 30 }
+const margin = { top: 0, right: 320, bottom: 0, left: 30 }
 const fullWidth = 1300
 const fullHeight = 700
 const width = fullWidth - margin.left - margin.right
 const height = fullHeight - margin.top - margin.bottom
 
 const tree = d3.tree()
-	.separation((a, b) => ((a.parent === b.parent) ? 1 : 0.5))
+	.separation((a, b) => ((a.parent === b.parent) ? 1 : 1))
 	.size([height, width])
 
 const svg = d3.select('body')
@@ -71,20 +94,23 @@ d3.json('1.json', (err, json) => {
 		.attr('class', 'link')
 		.attr('d', elbow)
 
-	const node = g.selectAll('.node')
+	var node = g.selectAll('.node')
 		.data(treeNodes.descendants())
 		.enter().append('g')
 		.attr('class', 'node')
-		.attr( 'transform', d => `translate(${d.y},${d.x})`)
-
-	node.append('text')
-		.attr('class', 'name')
-		.attr('x', d => {if (d.data.condition) { return 0} else {return 10}})
-		.text(d => {if (d.data.condition) {return d.data.condition} else {return d.data.field}})
-		.attr('text-anchor', d => {if (d.data.condition) {return "middle"} else {return "right"}})
-		.attr('alignment-baseline', "middle")
+		.attr('transform', d => `translate(${d.y},${d.x})`)
+		.append('foreignObject')
 		.attr('class', d => {if (d.data.condition) {return "cond"} else {return "dat"}})
-		
+		.append('xhtml:div')
+
+	
+	node.append('text')
+		.attr('x', d => {if (d.data.condition) {return 0} else {return 10}})
+		.text(d => {if (d.data.condition) {return d.data.condition} else {return d.data.field}})
+		//.attr('text-anchor', d => {if (d.data.condition) {return "middle"} else {return "right"}})
+		//.attr('text-anchor', "middle")
+		.attr('alignment-baseline', "middle")
+		//.attr('class', d => {if (d.data.condition) {return "cond"} else {return "dat"}})
 		
 		
 		
@@ -125,6 +151,5 @@ d3.json('1.json', (err, json) => {
 		.text(d => `${d.data.location}`)*/
 })
 </script>
-
 </body>
 </html>
