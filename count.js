@@ -22,7 +22,12 @@ function logOperations(value, control = 0, operator) {
             if (value == control) { return 1 } else { return 0 };
             break;
         case "in":
-            return value;
+            for (con in control) {
+                if (value == control[con]) {
+                    return 1;
+                }
+            }
+            return 0;
             break;
     }
 }
