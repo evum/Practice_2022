@@ -1,61 +1,87 @@
-/*function draw(){
-	var width = 700;
-	var height = 700;
-	// 1 Выберите ширину и высоту области рисования svg, установленной на странице, добавьте элемент g, чтобы установить положение
-	var svg = d3.select('body')
-		.append('svg')
-		.attr('width',width)
-		.attr('height',height)
-		.append('g')
-		.attr('transform','translate(50,0)');
-	// 2 Создание макета дерева и установка размера
-	var tree = d3.layout.tree()
-		.size([width,height-200])
+function draw() {
+    const lineLenght = 9;
+    const margin = { top: 0, right: 320, bottom: 0, left: 30 };
+    const fullWidth = 1300;
+    const fullHeight = 700;
+    const width = fullWidth - margin.left - margin.right;
+    const height = fullHeight - margin.top - margin.bottom;
 
-	// Генератор трех диагоналей
-	var diagonal = d3.svg.diagonal()
-		.projection(d=>[d.y,d.x])
-	// 4 запроса данных
-	d3.json("data.json", function(error, root) {
-	// 1 Получить массив узлов и массив соединений
-		var nodes = tree.nodes (root); // Получить всю информацию об узлах
-		var links = tree.links (nodes); // Получить коллекцию информации о подключении узла
-	
-	// 2 Создаем соединение
-		var link = svg.selectAll('.link')
-			.data(links)
-			.enter()
-			.append('path')
-			.attr('class','link')
-			.attr('d',diagonal)
+    const tree = d3.tree()
+        .separation((a, b) => (a.parent === b.parent ? 1 : 1))
+        .size([height, width]);
 
-	// 3 Сгенерировать узел
-		var node = svg.selectAll('.node')
-			.data(nodes)
-			.enter()
-			.append('g')
-			.attr('class','node')
-			.attr('transform',function(d){
-				return "translate(" + d.y + "," + d.x + ")";
-		});
+    const svg = d3.select("body")
+        .append("svg")
+        .attr("width", fullWidth)
+        .attr("height", fullHeight);
 
-	// 4 Добавляем круг к узлу, чтобы задать радиус 
-		node.append('circle')
-			.attr('r',4.5);
+    const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    const elbow = (d, i) => `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : 'h' + lineLenght}`;
+    d3.json("1.json", (err, json) => {
+        if (err) throw err;
+        console.log(json);
+        const nodes = d3.hierarchy(json, (d) => d.rules);
+        // maps hierarchy to tree layout
+        const treeNodes = tree(nodes);
 
-	// 5 Добавляем текст в узел, устанавливаем позицию стиля текста
-		node.append("text")
-			.attr ("dx", function (d) {return d.children? -15: 15;}) // Определить смещение оси x для отображения текста
-			.attr ("dy", 10) // определяем смещение оси y для отображения текста
-			.style ("text-anchor", function (d) {return d.children? "end": "start";}) // Отображение выравнивания текста
-			.attr('class','text')
-			.text(function(d) { return d.name; });
-	});
+        // adds links between nodes
+        const link = g.selectAll(".link")
+            .data(treeNodes.links())
+            .enter().append("path")
+            .attr("class", "link")
+            .attr("d", elbow);
+
+        const node = g.selectAll(".node")
+            .data(treeNodes.descendants())
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", d => `translate(${d.y},${d.x})`)
+            .append("foreignObject")
+            .attr("class", d => { if (d.data.condition) { return "cond" } else { return "dat" } })
+            .attr("width", d => { if (d.data.condition == "OR") { return "40" } })
+            .attr("x", d => { if (d.data.condition == "OR") { return "-20" } })
+            .append("xhtml:div");
+        //.attr('style', "width: 100%; height: 100%; vertical-align: center;")
+        node.append("text")
+            .attr("x", d => { if (d.data.condition) { return 0 } else { return 10 } })
+            .text(d => { if (d.data.condition) { return d.data.condition } else { return d.data.field } });
+        /*node.append('circle')
+            .attr("visibility", d => {if (d.data.condition) {return "visible"} else { return "hidden"}})
+            .attr("r", 20)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", "3")*/
+        /*node.append('rect')
+            .attr("visibility", d => {if (d.data.condition) {return "hidden"} else { return "visible"}})
+            .attr('height', 20)
+            .attr('width', 50)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", "1")
+            */
+
+        /*node.append('circle')
+            .attr("visibility", d => {if (d.data.condition) {return "visible"} else { return "hidden"}})
+            .attr("r", 5)
+            .style("fill", "none")
+            .style("stroke", "black")
+            .style("stroke-width", "3")*/
+
+        /*node.append('text')
+            .attr('x', 8)
+            .attr('y', 8)
+            .attr('dy', '.71em')
+            .attr('class', 'about lifespan')
+            .text(d => `${d.data.born} - ${d.data.died}`)
+
+        node.append('text')
+            .attr('class', 'about location')
+            .attr('x', 8)
+            .attr('y', 8)
+            .attr('dy', '1.86em')
+            .text(d => `${d.data.location}`)*/
+    });
 }
-
-
-
-
-
-//draw();*/
+draw();
