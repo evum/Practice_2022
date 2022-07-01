@@ -7,7 +7,7 @@ function draw() {
     const height = fullHeight - margin.top - margin.bottom;
 
     const tree = d3.tree()
-        .separation((a, b) => (a.parent === b.parent ? 1 : 1))
+        .separation((a, b) => (a.parent === b.parent ? 1 : 2))
         .size([height, width]);
 
     const svg = d3.select("body")
@@ -22,11 +22,10 @@ function draw() {
     d3.json("1.json", (err, json) => {
         if (err) throw err;
         console.log(json);
+        traverse(json);
         const nodes = d3.hierarchy(json, (d) => d.rules);
-        // maps hierarchy to tree layout
         const treeNodes = tree(nodes);
 
-        // adds links between nodes
         const link = g.selectAll(".link")
             .data(treeNodes.links())
             .enter().append("path")
@@ -39,14 +38,21 @@ function draw() {
             .attr("class", "node")
             .attr("transform", d => `translate(${d.y},${d.x})`)
             .append("foreignObject")
-            .attr("class", d => { if (d.data.condition) { return "cond" } else { return "dat" } })
+            .attr("class", d => {
+                if (d.data.condition) { return "cond" }
+                else { return "dat" }
+            })
             .attr("width", d => { if (d.data.condition == "OR") { return "40" } })
             .attr("x", d => { if (d.data.condition == "OR") { return "-20" } })
+            //.attr("value", d => { return logOperations(numbers[d.data.id], d.data.value, d.data.operator) })
             .append("xhtml:div");
-        //.attr('style', "width: 100%; height: 100%; vertical-align: center;")
+
         node.append("text")
-            .attr("x", d => { if (d.data.condition) { return 0 } else { return 10 } })
-            .text(d => { if (d.data.condition) { return d.data.condition } else { return d.data.field } });
+            .attr("x", d => { if (d.data.condition) { return 0; } else { return 10; } })
+            .text(d => {
+                if (d.data.condition) { return d.data.condition; }
+                else { return d.data.field /*+ "    value: " + numbers[d.data.id - 1];*/ }
+            })
         /*node.append('circle')
             .attr("visibility", d => {if (d.data.condition) {return "visible"} else { return "hidden"}})
             .attr("r", 20)

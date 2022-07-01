@@ -1,19 +1,34 @@
-/* async function populate() {
+function traverse(o) {
+    for (i in o) {
+        if (!!o[i] && typeof (o[i]) == "object") {
+            if (!Array.isArray(o[i])) {
+                if (o[i].condition) {
+                    console.log(i, o[i].condition);
+                    if (check(o)) {
 
-      const requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
-      const request = new Request(requestURL);
+                    }
+                }
+                else {
+                    console.log(i, o[i].field);
+                    o[i].count = logOperations(numbers[o[i].id], o[i].value, o[i].operator);
+                    console.log(o[i].count);
+                }
+            }
+            traverse(o[i]);
+        }
+    }
+}
 
-      const response = await fetch(request);
-      const superHeroesText = await response.text();
+function check(o) {
+    for (i in o) {
+        if (!!o[i] && typeof (o[i]) == "object") {
+            return false;
+        }
+    }
+    return true;
+}
 
-      const superHeroes = JSON.parse(superHeroesText);
-	  console.log(superHeroes);
-	  console.log(superHeroes.members);
-	}
-populate();
- */
-
-
+/*
 function readFile(input) {
   let file = input.files[0];
 
@@ -32,3 +47,4 @@ function readFile(input) {
     console.log(reader.error);
   };
 }
+*/
