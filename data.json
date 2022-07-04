@@ -14,13 +14,15 @@
           "name": "Robert Shanks",
           "born": 1781,
           "died": 1871,
-          "location": "Ireland/Petersburg, VA"
+          "location": "Ireland/Petersburg, VA",
+          "field": "123"
         },
         {
           "name": "Elizabeth Shanks",
           "born": 1795,
           "died": 1871,
-          "location": "Ireland/Petersburg, VA"
+          "location": "Ireland/Petersburg, VA",
+          "field":  "123"
         }
       ]
     },
@@ -34,13 +36,17 @@
           "name": "Henry Brown",
           "born": 1792,
           "died": 1845,
-          "location": "Montgomery, NC"
+          "location": "Montgomery, NC",
+          "field": "123"
+
         },
         {
           "name": "Sarah Houchins",
           "born": 1793,
           "died": 1882,
-          "location": "Montgomery, NC"
+          "location": "Montgomery, NC",
+          "field": "123"
+
         }
       ]
     }

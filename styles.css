@@ -22,6 +22,7 @@ div {
 	fill: none;
 	stroke: #ccc;
 	shape-rendering: crispEdges;
+	border-radius: 100px;
 }
 /* Стиль для узла датчика */
 .dat {

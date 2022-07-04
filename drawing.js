@@ -7,8 +7,9 @@ function draw() {
     const height = fullHeight - margin.top - margin.bottom;
 
     const tree = d3.tree()
-        .separation((a, b) => (a.parent === b.parent ? 1 : 2))
+        .separation((a, b) => (a.parent === b.parent ? 1 : 1))
         .size([height, width]);
+        //.nodeSize([30, 30]);
 
     const svg = d3.select("body")
         .append("svg")
@@ -17,21 +18,23 @@ function draw() {
 
     const g = svg.append('g')
         .attr('transform', `translate(${margin.left},${margin.top})`);
-
+    
     const elbow = (d, i) => `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : 'h' + lineLenght}`;
     d3.json("1.json", (err, json) => {
         if (err) throw err;
         console.log(json);
-        traverse(json);
+        counting(json);
+        console.log(json);
         const nodes = d3.hierarchy(json, (d) => d.rules);
         const treeNodes = tree(nodes);
-
+    
         const link = g.selectAll(".link")
             .data(treeNodes.links())
             .enter().append("path")
             .attr("class", "link")
             .attr("d", elbow);
 
+        
         const node = g.selectAll(".node")
             .data(treeNodes.descendants())
             .enter().append("g")
@@ -50,9 +53,9 @@ function draw() {
         node.append("text")
             .attr("x", d => { if (d.data.condition) { return 0; } else { return 10; } })
             .text(d => {
-                if (d.data.condition) { return d.data.condition; }
-                else { return d.data.field /*+ "    value: " + numbers[d.data.id - 1];*/ }
-            })
+                if (d.data.condition) { return d.data.condition + "Value: " + d.data.count; }
+                else { return d.data.field + "Value " + d.data.count;/*+ "    value: " + numbers[d.data.id - 1];*/ }
+            });
         /*node.append('circle')
             .attr("visibility", d => {if (d.data.condition) {return "visible"} else { return "hidden"}})
             .attr("r", 20)
