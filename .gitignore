@@ -1,2 +1,7 @@
-**/.vs
-**/test
+*.*
+*/
+!/additions
+!/data
+!/style
+!index.html
+!eslintrc.js

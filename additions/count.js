@@ -34,7 +34,8 @@ function logOperations(value, operator, control = 0) {
   }
 }
 
-export function counting(node) {
+function counting(node) {
+  const curNode = node;
   if (node == null) return;
   for (let i = 0; i < Object.keys(node.rules); i += 1) {
     counting(node.rules[i]);
@@ -44,11 +45,14 @@ export function counting(node) {
     for (let i = 0; i < Object.keys(node.rules); i += 1) {
       mas.push(Number(node.rules[i].count));
     }
-    node.count = logOperations(mas, 0, node.condition);
+    curNode.count = logOperations(mas, 0, node.condition);
     Console.log('Name ', node.condition, 'count ', node.count);
   } else {
-    node.count = logOperations(numbers[node.id], node.value, node.operator);
+    curNode.count = logOperations(numbers[node.id], node.value, node.operator);
     Console.log('Dat ', node.field, 'count ', node.count);
   }
-  return node.count;
 }
+
+export default {
+  numbers, logOperations, counting,
+};

@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\additions"
   ],
-  "SelectedNode": "\\drawing.js",
+  "SelectedNode": "\\additions\\drawing.js",
   "PreviewInSolutionExplorer": false
 }

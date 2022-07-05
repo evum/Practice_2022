@@ -1,5 +1,5 @@
-import * as d3 from './d3';
-import { counting } from './count';
+/* eslint-disable no-undef */
+import count from './count.js';
 
 const Console = console;
 
@@ -33,14 +33,14 @@ function draw() {
     // etc.
     return context;
   }
-  const elbow = (d) => `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : 'h' + lineLenght}`;
+  const elbow = (d) => `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : `h${lineLenght}`}`;
   // const elbow = (d, i) =>
   // `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : 'h' +
   // lineLenght}`;
   d3.json('data/cond.json', (err, json) => {
     if (err) throw err;
     Console.log(json);
-    counting(json);
+    count.counting(json);
     Console.log(json);
 
     const nodes = d3.hierarchy(json, (d) => d.rules);
@@ -51,7 +51,7 @@ function draw() {
       .enter().append('path')
       .attr('class', 'link');
       // .attr("d", elbow);
-    draw(link);
+    drawing(link);
     const node = g.selectAll('.node')
       .data(treeNodes.descendants())
       .enter().append('g')
@@ -71,7 +71,7 @@ function draw() {
       .attr('x', (d) => { if (d.data.condition) { return 0; } return 10; })
       .text((d) => {
         if (d.data.condition) { return `${d.data.condition}Value: ${d.data.count}`; }
-        return `${d.data.field}Value ${d.data.count}`;/* + "    value: " + numbers[d.data.id - 1]; */ 
+        return `${d.data.field}Value ${d.data.count}`;/* + "    value: " + numbers[d.data.id - 1]; */
       });
     /* node.append('circle')
         .attr("visibility", d => {if (d.data.condition) {return "visible"} else { return "hidden"}})
