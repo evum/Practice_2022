@@ -15,8 +15,9 @@ function draw() {
 
   const tree = d3.tree()
     .separation((a, b) => (a.parent === b.parent ? 1 : 1))
+    
     .size([height, width]);
-    // .nodeSize([30, 30]);
+    // .nodeSize([100, 200]);
 
   const svg = d3.select('body')
     .append('svg')
@@ -25,15 +26,7 @@ function draw() {
 
   const g = svg.append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`);
-  function drawing(context) {
-    context.moveTo(10, 10); // move current point to ⟨10,10⟩
-    context.lineTo(100, 10); // draw straight line to ⟨100,10⟩
-    context.arcTo(150, 150, 300, 10, 40); // draw an arc, the turtle ends up at ⟨194.4,108.5⟩
-    context.lineTo(300, 10); // draw straight line to ⟨300,10⟩
-    // etc.
-    return context;
-  }
-  const elbow = (d) => `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : `h${lineLenght}`}`;
+  const elbow = (d) => `M${d.source.y},${d.source.x},L${d.target.y},${d.target.x}`;
   // const elbow = (d, i) =>
   // `M${d.source.y},${d.source.x}H${d.target.y},V${d.target.x}${d.target.children ? '' : 'h' +
   // lineLenght}`;
@@ -56,22 +49,50 @@ function draw() {
       .enter().append('g')
       .attr('class', 'node')
       .attr('transform', (d) => `translate(${d.y},${d.x})`)
-      .append('foreignObject')
+    node.append('circle')
+      .attr('r', 5)
+      .attr('fill', (d) => {if (d.data.count == 1) {return 'green'} return 'white'} )
+      .attr('stroke', 'black')
+      .attr('stroke-width', '1');
+      
+    
+    /*node.append('foreignObject')
       .attr('class', (d) => {
         if (d.data.condition) { return 'cond'; } return 'dat';
       })
       .attr('width', (d) => { if (d.data.condition === 'OR') { return '40'; } return 0; })
-      .attr('x', (d) => { if (d.data.condition === 'OR') { return '-20'; } return 0; })
+      .append('xhtml:div');
+      */
+    node.append('rect')
+      .attr('width', '100')
+      .attr('height', '20')
+      .attr('fill', 'DarkSeaGreen')
+      .attr('x', (d) => {if (d.data.field) {return -15} return 0})
+      // .attr('x', (d) => {if (d.data.condition == 'OR') {return '-10'} return '-15'})
+      .attr('y', '-30');
+    node.append('text')
+      .attr('x', (d) => {if (d.data.field) {return -15} return 0})
+      .attr('y', '-30')
+      .text((d) => {if (d.data.condition) {return d.data.condition} return d.data.field});
+      // .attr('x', (d) => {if (d.data.field) {return -d.data.field.length / 2} return 0})
+      // .attr('x', (d) => {if (d.data.condition == 'OR') {return '-10'} return '-15'})
+     //  .attr('y', (d) => {if (d.data.field) {return -d.data.field.length / 2} return 0});
+      //.attr('textLength', '100');
+
+
+      
+      // .attr('x', (d) => { if (d.data.condition === 'OR') { return '-40'; } return 0; })
       // .attr("value", d =>
       // { return logOperations(numbers[d.data.id], d.data.value, d.data.operator) })
-      .append('xhtml:div');
-
+     
+/*
     node.append('text')
-      .attr('x', (d) => { if (d.data.condition) { return 0; } return 10; })
+      // .attr('x', (d) => { if (d.data.condition) { return 0; } return 10; })
       .text((d) => {
         if (d.data.condition) { return `${d.data.condition}Value: ${d.data.count}`; }
-        return `${d.data.field}Value ${d.data.count}`;/* + "    value: " + numbers[d.data.id - 1]; */
-      });
+        return `${d.data.field}Value ${d.data.count}`;/* + "    value: " + numbers[d.data.id - 1];
+      }); */
+
     /* node.append('circle')
         .attr("visibility", d => {if (d.data.condition) {return "visible"} else { return "hidden"}})
         .attr("r", 20)
