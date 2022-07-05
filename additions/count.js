@@ -1,21 +1,25 @@
 const numbers = [1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
 const Console = console;
 function logOperations(value, operator, control = 0) {
+  let flag;
   switch (operator) {
     case 'AND':
-      for (let i = 0; i < Object.keys(value); i += 1) {
-        if (!value[i]) return 0;
-      }
-      return 1;
+      flag = 1;
+      value.forEach(function(item) {
+        if (!item) flag = 0;
+      });
+      return flag;
 
     case 'OR':
-      for (let i = 0; i < Object.keys(value); i += 1) {
-        if (value[i]) return 1;
-      }
-      return 0;
+      flag = 0;
+      value.forEach(function(item) {
+        if (item) flag = 1;
+      });
+      return flag;
 
     case 'NOT':
-      return !value;
+      if (value == 1) return 0;
+      return 1;
     case '<':
       if (value < control) { return 1; } return 0;
     case '>':
@@ -36,21 +40,21 @@ function logOperations(value, operator, control = 0) {
 
 function counting(node) {
   const curNode = node;
-  if (node == null) return;
-  for (let i = 0; i < Object.keys(node.rules); i += 1) {
-    counting(node.rules[i]);
+  if (curNode.rules == null) {
+    curNode.count = logOperations(numbers[curNode.id], curNode.operator, curNode.value);
+    Console.log('Dat ', curNode.field, 'count ', curNode.count);
+    return;
   }
-  if (node.condition) {
-    const mas = [];
-    for (let i = 0; i < Object.keys(node.rules); i += 1) {
-      mas.push(Number(node.rules[i].count));
-    }
-    curNode.count = logOperations(mas, 0, node.condition);
-    Console.log('Name ', node.condition, 'count ', node.count);
-  } else {
-    curNode.count = logOperations(numbers[node.id], node.value, node.operator);
-    Console.log('Dat ', node.field, 'count ', node.count);
-  }
+  curNode.rules.forEach(function(item, i, arr) {
+    counting(item);
+  });
+  const mas = [];
+  curNode.rules.forEach(function(item, i, arr) {
+    mas.push(Number(item.count));
+  });
+  
+  curNode.count = logOperations(mas, curNode.condition);
+  Console.log('Name ', curNode.condition, 'count ', curNode.count);
 }
 
 export default {

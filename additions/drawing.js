@@ -4,7 +4,7 @@ import count from './count.js';
 const Console = console;
 
 function draw() {
-  const lineLenght = 0;
+  const lineLenght = 10;
   const margin = {
     top: 0, right: 320, bottom: 0, left: 30,
   };
@@ -49,9 +49,8 @@ function draw() {
     const link = g.selectAll('.link')
       .data(treeNodes.links())
       .enter().append('path')
-      .attr('class', 'link');
-      // .attr("d", elbow);
-    drawing(link);
+      .attr('class', 'link')
+      .attr("d", elbow);
     const node = g.selectAll('.node')
       .data(treeNodes.descendants())
       .enter().append('g')
