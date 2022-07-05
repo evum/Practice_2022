@@ -1,5 +1,5 @@
 function draw() {
-    const lineLenght = 9;
+    const lineLenght = 0;
     const margin = { top: 0, right: 320, bottom: 0, left: 30 };
     const fullWidth = 1300;
     const fullHeight = 700;
@@ -25,7 +25,9 @@ function draw() {
         console.log(json);
         counting(json);
         console.log(json);
+
         const nodes = d3.hierarchy(json, (d) => d.rules);
+        console.log(nodes);
         const treeNodes = tree(nodes);
     
         const link = g.selectAll(".link")
