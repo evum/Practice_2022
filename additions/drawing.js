@@ -4,14 +4,15 @@ import count from './count.js';
 
 const Console = console;
 const mnogitel = 1;
-const datCondSize = 15;
+
+const jsonFile = 'data/data.json';
 
 function draw() {
   const margin = {
-    top: 10, right: 100, bottom: 0, left: 30,
+    top: 50, right: 100, bottom: 0, left: 30,
   };
   const fullWidth = 1300;
-  const fullHeight = 680;
+  const fullHeight = 700;
   const width = fullWidth - margin.left - margin.right;
   const height = fullHeight - margin.top - margin.bottom;
 
@@ -32,7 +33,7 @@ function draw() {
   const elbow = (d) => `M${d.source.y},${d.source.x},L${d.target.y},${d.target.x}`;
 
   // eslint-disable-next-line no-undef
-  d3.json('data/cond.json', (err, json) => {
+  d3.json(jsonFile, (err, json) => {
     if (err) throw err;
     Console.log(json);
     count.counting(json);
@@ -56,30 +57,27 @@ function draw() {
       .attr('class', 'node')
       .attr('transform', (d) => `translate(${d.y},${d.x})`);
 
+    /* Общий круг узла */
     node.append('circle')
       .attr('r', 5 * mnogitel)
       .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
       .attr('stroke', 'black')
-      .attr('stroke-width', '1');
-    /* node.append('foreignObject')
-      .attr('class', (d) => {
-        if (d.data.condition) { return 'cond'; } return 'dat';
-      })
-      .attr('width', (d) => { if (d.data.condition === 'OR') { return '40'; } return 0; })
-      .append('xhtml:div');
-      */
+      .attr('stroke-width', 1 * mnogitel);
 
     /* Узел датчика */
-    node.append('rect')
-      .attr('width', (d) => { if (d.data.field) { return d.data.field.length * 7 * mnogitel; } return 0; })
+    /* node.append('rect')
+      .attr('width', (d) => { if (d.data.field) { return d.data.field.length * 7 * mnogitel; }
+      return 0; })
       .attr('height', 15 * mnogitel)
       .attr('fill', 'Gainsboro')
-      .attr('x', (d) => { if (d.data.field) { return ((-d.data.field.length * 7) / 2) * mnogitel; } return 0; })
+      .attr('x', (d) => { if (d.data.field) { return ((-d.data.field.length * 7) / 2) * mnogitel; }
+      return 0; })
       .attr('y', -25 * mnogitel)
       .attr('rx', 5 * mnogitel)
       .attr('visibility', (d) => { if (d.data.condition) { return 'hidden'; } return 'visible'; });
+    */
     /* Узел условия */
-    node.append('circle')
+    /* node.append('circle')
       .attr('visibility', (d) => { if (d.data.condition) { return 'visible'; } return 'hidden'; })
       .attr('r', 20 * mnogitel)
       .attr('fill', 'white')
@@ -87,22 +85,44 @@ function draw() {
       .attr('text-anchor', 'middle')
       .attr('text-align', 'center')
       .attr('stroke-width', (d) => { if (d.data.count === 1) { return 3; } return 1; })
-      .append('text');
+      .append('text'); */
+
+    /* Все узлы */
+    node.append('foreignObject')
+      .attr('class', (d) => {
+        if (d.data.condition && Number(d.data.count) === 1) { return 'cond on'; }
+        if (d.data.condition) { return 'cond off'; }
+        return 'dat';
+      })
+      .append('xhtml:div')
+      .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; })
+      .append('text')
+      .text((d) => {
+        if (d.data.condition) { return d.data.condition; }
+        return d.data.field;
+      })
+      .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; });
+    // .attr('x', (d) => { if (d.data.field) { return (d.data.field) - 3; }
+    // return d.data.condition - 3; })
 
     /* Общий текст */
-    node.append('text')
-      .attr('x', (d) => {
+    /* .attr('x', (d) => {
         if (d.data.field) {
           return ((-d.data.field.length * 6) / 2) * mnogitel;
         }
         return ((-d.data.condition.length * 8) / 2) * mnogitel;
       })
-      .attr('y', (d) => { if (d.data.field) { return -14 * mnogitel; } return (12 / 4) * mnogitel; })
-      .text((d) => {
-        if (d.data.condition) { return d.data.condition; }
-        return d.data.field;
-      })
-      .attr('font-size', 12 * mnogitel);
+      .attr('y', (d) => { if (d.data.field) { return -14 * mnogitel; }
+      return (12 / 4) * mnogitel; }) */
+
+    // .attr('font-size', fontSize.cond * mnogitel);
+    /* node.append('text')
+      .attr('overflow', 'auto')
+      .text('Опиcание 1')
+      .attr('visibility', (d) => { if (d.data.condition) { return 'hidden'; } return 'visible'; })
+      .attr('x', (d) => { if (d.data.field)
+        { return (-d.data.field.length - 25 * 7) / 2 * mnogitel + 5; } return 0; })
+      .attr('y', (d) => ) */
     // .attr('class', (d) => { if (d.data.hasOwnProperty('condition')) { return 'condText'; }
     // return 'datText'; });
     // .attr('x', (d) => {if (d.data.field) {return -d.data.field.length / 2} return 0})

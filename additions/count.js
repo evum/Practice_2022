@@ -1,4 +1,4 @@
-const numbers = [1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
+const numbers = [1, 1, 2, 3, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1];
 const Console = console;
 function logOperations(value, operator, control = 0) {
   let flag;
@@ -23,12 +23,9 @@ function logOperations(value, operator, control = 0) {
     case '==':
       if (value === control) { return 1; } return 0;
     case 'in':
-      for (let i = 0; i < Object.keys(value); i += 1) {
-        if (value === control[i]) {
-          return 1;
-        }
-      }
-      return 0;
+      flag = 0;
+      Array.from(control).forEach((item) => { if (Number(value) === Number(item)) { flag = 1; } });
+      return flag;
     default:
       return -1;
   }
