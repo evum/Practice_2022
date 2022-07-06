@@ -14,7 +14,7 @@ function logOperations(value, operator, control = 0) {
       return flag;
 
     case 'NOT':
-      if (value === 1) return 0;
+      if (Number(value) === 1) return 0;
       return 1;
     case '<':
       if (value < control) { return 1; } return 0;

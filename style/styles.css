@@ -22,8 +22,7 @@ div {
 	fill: none;
 	stroke: #ccc;
 	shape-rendering: crispEdges;
-
-	/* border-radius: 100px; */
+	border-radius: 100px;
 }
 /* Стиль для узла датчика */
 .dat {
@@ -48,4 +47,8 @@ div {
 	border-radius: 100px;
 	text-align: center;
 	background-color: LightGreen;
+}
+.condText {
+	font-size: 12px;
+	text-anchor: "middle";
 }

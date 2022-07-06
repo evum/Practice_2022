@@ -3,13 +3,15 @@
 import count from './count.js';
 
 const Console = console;
+const mnogitel = 1;
+const datCondSize = 15;
 
 function draw() {
   const margin = {
-    top: 0, right: 320, bottom: 0, left: 30,
+    top: 10, right: 100, bottom: 0, left: 30,
   };
   const fullWidth = 1300;
-  const fullHeight = 1000;
+  const fullHeight = 680;
   const width = fullWidth - margin.left - margin.right;
   const height = fullHeight - margin.top - margin.bottom;
 
@@ -55,7 +57,7 @@ function draw() {
       .attr('transform', (d) => `translate(${d.y},${d.x})`);
 
     node.append('circle')
-      .attr('r', 5)
+      .attr('r', 5 * mnogitel)
       .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
       .attr('stroke', 'black')
       .attr('stroke-width', '1');
@@ -69,37 +71,40 @@ function draw() {
 
     /* Узел датчика */
     node.append('rect')
-      .attr('width', (d) => { if (d.data.field) { return d.data.field.length * 10; } return 0; })
-      .attr('height', '20')
-      .attr('fill', 'DarkSeaGreen')
-      .attr('x', (d) => { if (d.data.field) { return (-d.data.field.length * 10) / 2; } return 0; })
-      .attr('y', '-30')
-      .attr('rx', '20px')
+      .attr('width', (d) => { if (d.data.field) { return d.data.field.length * 7 * mnogitel; } return 0; })
+      .attr('height', 15 * mnogitel)
+      .attr('fill', 'Gainsboro')
+      .attr('x', (d) => { if (d.data.field) { return ((-d.data.field.length * 7) / 2) * mnogitel; } return 0; })
+      .attr('y', -25 * mnogitel)
+      .attr('rx', 5 * mnogitel)
       .attr('visibility', (d) => { if (d.data.condition) { return 'hidden'; } return 'visible'; });
-
     /* Узел условия */
     node.append('circle')
       .attr('visibility', (d) => { if (d.data.condition) { return 'visible'; } return 'hidden'; })
-      .attr('r', '25')
+      .attr('r', 20 * mnogitel)
       .attr('fill', 'white')
       .attr('stroke', (d) => { if (d.data.count === 1) { return 'red'; } return 'black'; })
-      .attr('stroke-width', (d) => { if (d.data.count === 1) { return 3; } return 1; });
+      .attr('text-anchor', 'middle')
+      .attr('text-align', 'center')
+      .attr('stroke-width', (d) => { if (d.data.count === 1) { return 3; } return 1; })
+      .append('text');
 
     /* Общий текст */
     node.append('text')
       .attr('x', (d) => {
         if (d.data.field) {
-          Console.log(d.data.field.length / 2);
-          return (-d.data.field.length * 8) / 2;
+          return ((-d.data.field.length * 6) / 2) * mnogitel;
         }
-        if (d.data.condition === 'OR') { return -10; }
-        return -16;
+        return ((-d.data.condition.length * 8) / 2) * mnogitel;
       })
-      .attr('y', (d) => { if (d.data.field) { return '-15'; } return '3'; })
+      .attr('y', (d) => { if (d.data.field) { return -14 * mnogitel; } return (12 / 4) * mnogitel; })
       .text((d) => {
         if (d.data.condition) { return d.data.condition; }
         return d.data.field;
-      });
+      })
+      .attr('font-size', 12 * mnogitel);
+    // .attr('class', (d) => { if (d.data.hasOwnProperty('condition')) { return 'condText'; }
+    // return 'datText'; });
     // .attr('x', (d) => {if (d.data.field) {return -d.data.field.length / 2} return 0})
     // .attr('x', (d) => {if (d.data.condition == 'OR') {return '-10'} return '-15'})
     //  .attr('y', (d) => {if (d.data.field) {return -d.data.field.length / 2} return 0});
