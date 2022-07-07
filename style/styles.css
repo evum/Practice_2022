@@ -1,3 +1,8 @@
+.svg {
+	height: 1400px;
+	width: 1600px;
+	overflow: auto;
+}
 /* Стиль для узла */
 .node {
 	position: absolute;
@@ -15,14 +20,14 @@
 /* Стиль для узла датчика */
 .dat {
 	border-radius: 10px;
-	width: 100px;
+	width: 110px;
 	height: 60px;
 	border: solid 1px black;
 	text-anchor: middle;
 	background-color: Gainsboro;
 	position: relative;
-	x: -50;
-	y: -70;
+	x: -55;
+	y: -65;
 }
 
 /* Стиль для узла условия */
@@ -31,9 +36,9 @@
 	width: 40px;
 	height: 40px;
 	padding: 1px;
-	
 	border-radius: 100px;
 	text-align: center;
+	border: var(--border-style);
 	background-color: white;
 	x: -20;
 	y:-20;
@@ -77,5 +82,5 @@
 .condText {
 	position: relative;
 	font-size: 14px;
-	top: 15%;
+	top: 17%;
 }

@@ -3,46 +3,59 @@
 import count from './count.js';
 
 const Console = console;
-const mnogitel = 1;
 
-const jsonFile = 'data/data.json';
+const jsonFile = 'data/cond.json';
+let xMax = 0;
+function findMax(nodes) {
+  const curNodes = nodes;
+  if (curNodes.children === undefined && -curNodes.x > xMax) {
+    xMax = curNodes.x;
+    Console.log('xMax', xMax);
+  } else {
+    Console.log(curNodes.children);
+    curNodes.children.forEach((item) => {
+      findMax(item);
+    });
+  }
+}
 
 function draw() {
   const margin = {
-    top: 50, right: 100, bottom: 0, left: 30,
+    top: 600, right: 100, bottom: 0, left: 30,
   };
-  const fullWidth = 1300;
-  const fullHeight = 700;
+  const fullWidth = 2600;
+  const fullHeight = 1400;
   const width = fullWidth - margin.left - margin.right;
   const height = fullHeight - margin.top - margin.bottom;
 
   // eslint-disable-next-line no-undef
   const tree = d3.tree()
-    .separation((a, b) => (a.parent === b.parent ? 1 : 1))
-    .size([height, width]);
-    // .nodeSize([100, 200]);
+    .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
+    // .size([height, width]);
+    .nodeSize([90, 200]);
 
   // eslint-disable-next-line no-undef
   const svg = d3.select('body')
     .append('svg')
-    .attr('width', fullWidth)
-    .attr('height', fullHeight);
-
+    // .attr('height', fullHeight)
+    // .attr('width', fullWidth)
+    .attr('class', 'svg');
   const g = svg.append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+    .attr('transform', `translate(${margin.left},${fullHeight / 2 - 50})`)
+    .attr('class', 'svg');
   const elbow = (d) => `M${d.source.y},${d.source.x},L${d.target.y},${d.target.x}`;
 
   // eslint-disable-next-line no-undef
   d3.json(jsonFile, (err, json) => {
     if (err) throw err;
-    Console.log(json);
     count.counting(json);
     Console.log(json);
-
     // eslint-disable-next-line no-undef
     const nodes = d3.hierarchy(json, (d) => d.rules);
-    Console.log(nodes);
     const treeNodes = tree(nodes);
+    Console.log(nodes);
+    // svg.attr('width', findMax(nodes));
+
     const link = g.selectAll('.link');
 
     link.data(treeNodes.links())
@@ -59,10 +72,26 @@ function draw() {
 
     /* Общий круг узла */
     node.append('circle')
-      .attr('r', 5 * mnogitel)
+      .attr('r', 5)
       .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
       .attr('stroke', 'black')
-      .attr('stroke-width', 1 * mnogitel);
+      .attr('stroke-width', 1);
+
+    /* Все узлы */
+    node.append('foreignObject')
+      .attr('class', (d) => {
+        if (d.data.condition && Number(d.data.count) === 1) { return 'cond on'; }
+        if (d.data.condition) { return 'cond off'; }
+        return 'dat';
+      })
+      .append('xhtml:div')
+      .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; })
+      .append('text')
+      .text((d) => {
+        if (d.data.condition) { return d.data.condition; }
+        return d.data.field;
+      })
+      .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; });
 
     /* Узел датчика */
     /* node.append('rect')
@@ -87,21 +116,6 @@ function draw() {
       .attr('stroke-width', (d) => { if (d.data.count === 1) { return 3; } return 1; })
       .append('text'); */
 
-    /* Все узлы */
-    node.append('foreignObject')
-      .attr('class', (d) => {
-        if (d.data.condition && Number(d.data.count) === 1) { return 'cond on'; }
-        if (d.data.condition) { return 'cond off'; }
-        return 'dat';
-      })
-      .append('xhtml:div')
-      .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; })
-      .append('text')
-      .text((d) => {
-        if (d.data.condition) { return d.data.condition; }
-        return d.data.field;
-      })
-      .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; });
     // .attr('x', (d) => { if (d.data.field) { return (d.data.field) - 3; }
     // return d.data.condition - 3; })
 
