@@ -5,14 +5,28 @@ import count from './count.js';
 const Console = console;
 
 const jsonFile = 'data/cond.json';
-let xMax = 0;
+const y = {
+  min: 0,
+  max: 0,
+};
+const x = {
+  max: 0,
+};
 function findMax(nodes) {
   const curNodes = nodes;
-  if (curNodes.children === undefined && -curNodes.x > xMax) {
-    xMax = curNodes.x;
-    Console.log('xMax', xMax);
+  if (curNodes.children === undefined) {
+    if (curNodes.y > x.max) {
+      x.max = curNodes.y;
+      Console.log('xMax', x.max);
+    }
+    if (curNodes.x > y.max) {
+      y.max = curNodes.x;
+    }
+    if (curNodes.x < y.min) {
+      y.min = curNodes.x;
+    }
   } else {
-    Console.log(curNodes.children);
+    Console.log(curNodes);
     curNodes.children.forEach((item) => {
       findMax(item);
     });
@@ -23,10 +37,6 @@ function draw() {
   const margin = {
     top: 600, right: 100, bottom: 0, left: 30,
   };
-  const fullWidth = 2600;
-  const fullHeight = 1400;
-  const width = fullWidth - margin.left - margin.right;
-  const height = fullHeight - margin.top - margin.bottom;
 
   // eslint-disable-next-line no-undef
   const tree = d3.tree()
@@ -40,9 +50,7 @@ function draw() {
     // .attr('height', fullHeight)
     // .attr('width', fullWidth)
     .attr('class', 'svg');
-  const g = svg.append('g')
-    .attr('transform', `translate(${margin.left},${fullHeight / 2 - 50})`)
-    .attr('class', 'svg');
+
   const elbow = (d) => `M${d.source.y},${d.source.x},L${d.target.y},${d.target.x}`;
 
   // eslint-disable-next-line no-undef
@@ -54,8 +62,15 @@ function draw() {
     const nodes = d3.hierarchy(json, (d) => d.rules);
     const treeNodes = tree(nodes);
     Console.log(nodes);
+    findMax(nodes);
+    Console.log(y.max, y.min);
+    const width = x.max + 100;
+    const height = Math.abs(y.min) + y.max + 100;
+    svg.attr('width', width);
+    svg.attr('height', height);
     // svg.attr('width', findMax(nodes));
-
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${Math.abs(y.min) + 70})`);
     const link = g.selectAll('.link');
 
     link.data(treeNodes.links())
