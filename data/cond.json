@@ -69,7 +69,7 @@
     }, {
         "condition": "OR",
         "rules": [{
-            "field": "разрушение Двигатель",
+            "field": "давление9",
             "type": "string",
             "id": "9",
             "subalert": "cpr-current-state",

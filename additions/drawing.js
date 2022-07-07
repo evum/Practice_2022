@@ -1,4 +1,3 @@
-// eslint-disable no-undef
 // eslint-disable-next-line import/extensions
 import count from './count.js';
 
@@ -10,20 +9,24 @@ const y = {
   max: 0,
 };
 const x = {
+  min: 0,
   max: 0,
 };
 function findMax(nodes) {
   const curNodes = nodes;
+  const temp = curNodes.x;
+  curNodes.x = curNodes.y;
+  curNodes.y = temp;
   if (curNodes.children === undefined) {
-    if (curNodes.y > x.max) {
-      x.max = curNodes.y;
+    if (curNodes.x > x.max) {
+      x.max = curNodes.x;
       Console.log('xMax', x.max);
     }
-    if (curNodes.x > y.max) {
-      y.max = curNodes.x;
+    if (curNodes.y > y.max) {
+      y.max = curNodes.y;
     }
-    if (curNodes.x < y.min) {
-      y.min = curNodes.x;
+    if (curNodes.y < y.min) {
+      y.min = curNodes.y;
     }
   } else {
     Console.log(curNodes);
@@ -42,7 +45,7 @@ function draw() {
   const tree = d3.tree()
     .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
     // .size([height, width]);
-    .nodeSize([90, 200]);
+    .nodeSize([120, 100]);
 
   // eslint-disable-next-line no-undef
   const svg = d3.select('body')
@@ -63,14 +66,14 @@ function draw() {
     const treeNodes = tree(nodes);
     Console.log(nodes);
     findMax(nodes);
-    Console.log(y.max, y.min);
-    const width = x.max + 100;
-    const height = Math.abs(y.min) + y.max + 100;
+    Console.log(y.max);
+    const height = x.max + 100;
+    const width = Math.abs(y.min) + y.max + 140;
     svg.attr('width', width);
     svg.attr('height', height);
     // svg.attr('width', findMax(nodes));
     const g = svg.append('g')
-      .attr('transform', `translate(${margin.left},${Math.abs(y.min) + 70})`);
+      .attr('transform', `translate(${Math.abs(y.min) + 70},${30})`);
     const link = g.selectAll('.link');
 
     link.data(treeNodes.links())
