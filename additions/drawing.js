@@ -28,6 +28,12 @@ function findMax(nodes) {
     if (curNodes.y < y.min) {
       y.min = curNodes.y;
     }
+    curNodes.parent.children.forEach((child) => {
+      if (child.data.condition) {
+        curNodes.x -= 40;
+        curNodes.y -= 10;
+      }
+    });
   } else {
     Console.log(curNodes);
     curNodes.children.forEach((item) => {
@@ -37,15 +43,11 @@ function findMax(nodes) {
 }
 
 function draw() {
-  const margin = {
-    top: 600, right: 100, bottom: 0, left: 30,
-  };
-
   // eslint-disable-next-line no-undef
   const tree = d3.tree()
-    .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
+    .separation((a, b) => (a.parent === b.parent ? 1 : 1.5))
     // .size([height, width]);
-    .nodeSize([120, 100]);
+    .nodeSize([85, 80]);
 
   // eslint-disable-next-line no-undef
   const svg = d3.select('body')
@@ -68,12 +70,12 @@ function draw() {
     findMax(nodes);
     Console.log(y.max);
     const height = x.max + 100;
-    const width = Math.abs(y.min) + y.max + 140;
+    const width = Math.abs(y.min) + y.max + 100;
     svg.attr('width', width);
     svg.attr('height', height);
     // svg.attr('width', findMax(nodes));
     const g = svg.append('g')
-      .attr('transform', `translate(${Math.abs(y.min) + 70},${30})`);
+      .attr('transform', `translate(${Math.abs(y.min) + 60},${30})`);
     const link = g.selectAll('.link');
 
     link.data(treeNodes.links())
@@ -109,7 +111,10 @@ function draw() {
         if (d.data.condition) { return d.data.condition; }
         return d.data.field;
       })
-      .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; });
+      .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; })
+      .append('text')
+      .text((d) => { if (d.data.description) { return `\n${d.data.description}`; } return ''; })
+      .attr('class', (d) => { if (d.data.field) { return 'additionText'; } return ''; });
 
     /* Узел датчика */
     /* node.append('rect')

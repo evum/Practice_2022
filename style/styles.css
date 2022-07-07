@@ -18,37 +18,16 @@
 /* Стиль для узла датчика */
 .dat {
 	border-radius: 10px;
-	width: 110px;
-	height: 30px;
+	width: 5em;
+	height: 4em;
 	border: solid 1px black;
 	text-anchor: middle;
 	background-color: Gainsboro;
 	position: relative;
-	x: -55;
-	y: -35;
-}
 
-/* Стиль для узла условия */
-.cond {
-	position: relative;
-	width: 40px;
-	height: 40px;
-	padding: 1px;
-	border-radius: 100px;
-	text-align: center;
-	border: var(--border-style);
-	background-color: white;
-	x: -20;
-	y:-20;
-}
-/* Дополнение для стиля неактивированного узла условия */
-.off {
-	border: solid 1px black;
-}
 
-/* Дополнение для стиля активированного узла условия */
-.on {
-	border: solid 2px red;
+	x: -2.5em;
+	y: 5;
 }
 
 /* Стиль для div'а датчика */
@@ -58,16 +37,35 @@
 	position: relative;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+	overflow: visible;
 	vertical-align: middle;
-	padding: 5px 0 ;
+	padding: 1px 0;
+	overflow-wrap: break-word;
+	overflow: auto;
+	
 }
 
 /* Стиль для текста датчика */
 .datText {
 	position: relative;
-	font-size: 16px;
+	font-size: 12px;
 	font-weight: bold;
+	
+}
+
+/* Стиль для узла условия */
+.cond {
+	position: relative;
+	width: 35px;
+	height: 35px;
+	padding: 1px;
+	border-radius: 100px;
+	text-align: center;
+	border: var(--border-style);
+	background-color: white;
+	x: -17;
+	y: -17;
+
 }
 
 /* Стиль для div'а условия */
@@ -78,9 +76,27 @@
 	height: 100%;
 }
 
+/* Дополнение для стиля неактивированного узла условия */
+.off {
+	border: solid 1px black;
+}
+
+/* Дополнение для стиля активированного узла условия */
+.on {
+	border: solid 2px red;
+}
+
 /* Стиль для текста условия */
 .condText {
 	position: relative;
-	font-size: 14px;
-	top: 17%;
+	font-size: 12px;
+	top: 12%;
 }
+.additionText {
+	position: relative;
+	font-size: 11px;
+	font-weight:normal
+}
+Div::-webkit-scrollbar {
+	width: 0;
+  }
