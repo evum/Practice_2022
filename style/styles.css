@@ -98,5 +98,6 @@
 	font-weight:normal
 }
 Div::-webkit-scrollbar {
-	width: 0;
+	width: 2px;
+	background-color: black;
   }

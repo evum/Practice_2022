@@ -1,5 +1,4 @@
 const numbers = [1, 1, 2, 3, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1];
-const Console = console;
 function logOperations(value, operator, control = 0) {
   let flag;
   const numberValue = Number(value);
@@ -37,7 +36,6 @@ function counting(node) {
   const curNode = node;
   if (curNode.rules == null) {
     curNode.count = logOperations(numbers[curNode.id], curNode.operator, curNode.value);
-    Console.log('Dat ', curNode.field, 'count ', curNode.count);
     return;
   }
   curNode.rules.forEach((item) => {
@@ -48,7 +46,6 @@ function counting(node) {
     mas.push(Number(item.count));
   });
   curNode.count = logOperations(mas, curNode.condition);
-  Console.log('Name ', curNode.condition, 'count ', curNode.count);
 }
 
 export default {
