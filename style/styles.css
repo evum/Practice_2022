@@ -12,9 +12,8 @@
 .link {
 	fill: none;
 	stroke: #ccc;
-	shape-rendering: crispEdges;
-	border-radius: 100px;
-}
+	stroke-width: 1.5px;
+  }
 /* Стиль для узла датчика */
 .dat {
 	border-radius: 10px;
