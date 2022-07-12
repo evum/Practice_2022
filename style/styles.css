@@ -23,8 +23,7 @@
 	text-anchor: middle;
 	background-color: Gainsboro;
 	position: relative;
-
-
+	cursor: pointer;
 	x: -2.5em;
 	y: 5;
 }
@@ -62,6 +61,7 @@
 	text-align: center;
 	border: var(--border-style);
 	background-color: white;
+	cursor: pointer;
 	x: -17;
 	y: -17;
 
@@ -100,3 +100,25 @@ Div::-webkit-scrollbar {
 	width: 2px;
 	background-color: black;
   }
+
+.helper {
+	font-size: 11px;
+	font-weight: bold;
+	position: fixed;
+	bottom: 0%;
+	right: 3%;
+	text-align: center;
+}
+
+.bigHelper {
+	overflow: auto;
+	top: 65%;
+	position: fixed;
+	width: 30%;
+	height: 30%;
+	border: solid;
+	border-radius: 5px;
+	box-sizing: border-box;
+    padding: 20px;
+	
+}

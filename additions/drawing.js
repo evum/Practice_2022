@@ -39,6 +39,14 @@ function rotate(nodes) {
       rotate(item);
     });
   }
+  if (curNodes.data.field) {
+    curNodes.parent.children.forEach((child) => {
+      if (child.data.condition) {
+        curNodes.x -= 25;
+        curNodes.y -= 10;
+      }
+    });
+  }
 }
 
 function findMax(nodes) {
@@ -53,12 +61,6 @@ function findMax(nodes) {
     if (curNodes.y < y.min) {
       y.min = curNodes.y;
     }
-    curNodes.parent.children.forEach((child) => {
-      if (child.data.condition) {
-        curNodes.x -= 40;
-        curNodes.y -= 10;
-      }
-    });
   } else {
     curNodes.children.forEach((item) => {
       findMax(item);
@@ -66,9 +68,35 @@ function findMax(nodes) {
   }
 }
 
+function bigHelperAdd(d) {
+  // eslint-disable-next-line no-undef
+  d3.select('body').append('div')
+    .attr('class', 'bigHelper')
+    .attr('id', d.data.id)
+    .append('foreignObject')
+    .append('xhtml:body')
+    .html(`<ul> <li> Название: ${d.data.field} </li>
+      <li> Описание: ${d.data.description} </li> 
+      <li> Оператор: ${d.data.operator} </li>
+      <li> Значение: ${d.data.value} </li>
+      <li> Результат: ${d.data.count} </li> </ul>`);
+}
+
+function helpDisplay(d) {
+  if (document.getElementById(d.data.id) !== null) {
+    document.getElementById(d.data.id).remove();
+  } else if (document.querySelectorAll('.bigHelper') !== null) {
+    document.querySelectorAll('.bigHelper').forEach((elem) => {
+      elem.parentNode.removeChild(elem);
+    });
+    bigHelperAdd(d);
+  } else {
+    bigHelperAdd(d);
+  }
+}
+
 function click(d) {
   const curD = d;
-  Console.log('click ', d);
   if (curD.children) {
     curD.tempChildren = curD.children;
     curD.children = undefined;
@@ -76,9 +104,9 @@ function click(d) {
     curD.children = curD.tempChildren;
     curD.tempChildren = undefined;
   }
-  Console.log('before ', globalNodes);
   const page = document.getElementById('graph');
   page.remove();
+  // eslint-disable-next-line no-use-before-define
   treeBuilding(globalNodes, 0);
 }
 
@@ -101,9 +129,7 @@ function treeBuilding(nodes, invert = 1) {
     .enter().append('path')
     .attr('class', 'link')
     .attr('stroke', 'red')
-    .attr('d', elbow)
-    .exit()
-    .remove();
+    .attr('d', elbow);
 
   const node = g.selectAll('.node')
     .data(treeNodes.descendants())
@@ -120,15 +146,21 @@ function treeBuilding(nodes, invert = 1) {
     .attr('stroke-width', 1);
 
   /* Все узлы */
-  node.append('foreignObject')
+  const divs = node.append('foreignObject')
     .attr('class', (d) => {
       if (d.data.condition && Number(d.data.count) === 1) { return 'cond on'; }
       if (d.data.condition) { return 'cond off'; }
       return 'dat';
     })
     .append('xhtml:div')
-    .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; })
-    .append('text')
+    .attr('title', (d) => {
+      if (d.data.field) {
+        return `Описание: ${d.data.description} \nОператор: ${d.data.operator} \nЗначение: ${d.data.value} \nРезультат: ${d.data.count}`;
+      }
+      return `Результат: ${d.data.count}`;
+    })
+    .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; });
+  divs.append('text')
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
       return d.data.field;
@@ -136,9 +168,13 @@ function treeBuilding(nodes, invert = 1) {
     .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; })
     .append('text')
     .text((d) => { if (d.data.description) { return `\n${d.data.description}`; } return ''; })
-    .attr('class', (d) => { if (d.data.field) { return 'additionText'; } return ''; })
-    .exit()
-    .remove();
+    .attr('class', (d) => { if (d.data.field) { return 'additionText'; } return ''; });
+
+  divs.append('xhtml:div')
+    .attr('class', 'helper')
+    .on('click', helpDisplay)
+    .append('text')
+    .text((d) => { if (d.data.field) { return '?'; } return ''; });
 }
 
 function draw() {
