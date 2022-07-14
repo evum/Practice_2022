@@ -2,8 +2,11 @@
 import count from './count.js';
 // eslint-disable-next-line import/extensions
 import tooltipText from './tooltip.js';
+// eslint-disable-next-line import/extensions
+import geometry from './geometry.js';
 
 const Console = console;
+const duration = 5;
 
 const jsonFile = 'data/cond.json';
 let globalNodes;
@@ -32,6 +35,7 @@ const gNode = svg.append('g')
   .attr('class', 'node');
 // eslint-disable-next-line no-undef
 const diagonal = d3.linkVertical().x((d) => d.x).y((d) => d.y);
+const transition = svg.transition().duration(duration);
 
 function bigHelperAdd(d) {
   // eslint-disable-next-line no-undef
@@ -40,6 +44,7 @@ function bigHelperAdd(d) {
     .attr('class', 'bigHelper')
     .attr('id', d.data.id)
     .append('xhtml:body')
+    .attr('class', 'bigHelperBody')
     .html(`Название: ${d.data.field} <br>
      Описание: ${d.data.description} <br> 
      Оператор: ${d.data.operator} <br>
@@ -86,11 +91,23 @@ function nodeAdditions(node) {
     .attr('stroke-width', 1);
 
   /* Все узлы */
+  node.append('path')
+    .attr('d', geometry.distribut)
+    .attr('class', (d) => {
+      if (d.data.condition && Number(d.data.count) === 1) { return 'nodePath on'; }
+      if (d.data.condition) { return 'nodePath off'; }
+      return '';
+    });
+  node.append('text')
+    .text((d) => { if (d.data.field) { return ''; } return d.data.condition; })
+    .attr('x', -10)
+    .attr('y', 10)
+    .attr('class', 'condText');
+
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
-      if (d.data.condition && Number(d.data.count) === 1) { return 'cond on'; }
-      if (d.data.condition) { return 'cond off'; }
-      return 'dat';
+      if (d.data.field) { return 'dat'; }
+      return '';
     });
   const divs = foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
@@ -163,7 +180,7 @@ function treeBuilding(source) {
       return diagonal({ source: o, target: o });
     });
 
-  node.merge(nodeEnter)
+  node.merge(nodeEnter).transition(transition)
     .attr('transform', (d) => `translate(${d.x},${d.y})`)
     .attr('fill-opacity', 1)
     .attr('stroke-opacity', 1);
@@ -172,7 +189,7 @@ function treeBuilding(source) {
     .attr('fill-opacity', 0)
     .attr('stroke-opacity', 0);
 
-  link.merge(linkEnter)
+  link.merge(linkEnter).transition(transition)
     .attr('d', diagonal);
 
   // Transition exiting nodes to the parent's new position.

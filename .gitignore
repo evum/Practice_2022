@@ -7,3 +7,4 @@
 !eslintrc.js
 additions/parse.js
 !additions/tooltip.js
+!additions/geometry.js
