@@ -66,6 +66,9 @@
           "out": "state"
       }],
       "condition": "OR"
+  },{
+      "condition": "AND",
+      "rules":[]
   }],
   "condition": "AND"
 }

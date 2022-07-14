@@ -7,6 +7,8 @@
 	border: solid 1px black;
 	width: 30px;
     height: 2px;
+	pointer-events: all;
+	cursor: pointer;
 }
 /* Стиль для линии */
 .link {
@@ -19,10 +21,10 @@
 	border-radius: 10px;
 	width: 5em;
 	height: 4em;
-	border: solid 1px black;
+	border: 1px solid black;
 	text-anchor: middle;
 	background-color: Gainsboro;
-	position: relative;
+	position: absolute;
 	cursor: pointer;
 	x: -2.5em;
 	y: 5;
@@ -30,25 +32,24 @@
 
 /* Стиль для div'а датчика */
 .datDiv {
-	text-anchor: middle;
-	text-align: center;
 	position: relative;
 	width: 100%;
 	height: 100%;
-	overflow: visible;
-	vertical-align: middle;
-	padding: 1px 0;
-	overflow-wrap: break-word;
 	overflow: auto;
+	vertical-align: middle;
+	margin: 1px;
+	overflow-wrap: break-word;
 	
 }
 
 /* Стиль для текста датчика */
 .datText {
-	position: relative;
+	position: absolute;
 	font-size: 12px;
 	font-weight: bold;
-	
+	top: 50%;
+ 	left: 50%;
+  	transform: translate(-50%, -50%);
 }
 
 /* Стиль для узла условия */
@@ -59,7 +60,7 @@
 	padding: 1px;
 	border-radius: 100px;
 	text-align: center;
-	border: var(--border-style);
+	border: 1px;
 	background-color: white;
 	cursor: pointer;
 	x: -17;
@@ -69,6 +70,7 @@
 
 /* Стиль для div'а условия */
 .condDiv {
+	background-color: white;
 	text-anchor: middle;
 	position: relative;
 	width: 100%;
@@ -92,33 +94,48 @@
 	top: 12%;
 }
 .additionText {
-	position: relative;
+	position: static;
 	font-size: 11px;
-	font-weight:normal
+	font-weight:normal;
+	margin: 1px;
+	
 }
 Div::-webkit-scrollbar {
-	width: 2px;
+	width: 0px;
+	height: 0px;
 	background-color: black;
-  }
+}
 
 .helper {
 	font-size: 11px;
 	font-weight: bold;
 	position: fixed;
-	bottom: 0%;
+	bottom: 4%;
 	right: 3%;
 	text-align: center;
 }
 
 .bigHelper {
 	overflow: auto;
-	top: 65%;
 	position: fixed;
 	width: 30%;
 	height: 30%;
+	left: 10%;
 	border: solid;
 	border-radius: 5px;
 	box-sizing: border-box;
-    padding: 20px;
-	
+    margin: 20px;
+	x: -570;
+	y: 420;
+}
+.tooltip {
+	position: fixed;
+	padding: 1px 2px;
+	border: 1px solid #b3c9ce;
+	border-radius: 4px;
+	text-align: center;
+	font: italic 10px/1.3 sans-serif;
+	color: #333;
+	background: #fff;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
 }

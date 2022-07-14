@@ -1,19 +1,20 @@
 // eslint-disable-next-line import/extensions
 import count from './count.js';
+// eslint-disable-next-line import/extensions
+import tooltipText from './tooltip.js';
 
 const Console = console;
 
 const jsonFile = 'data/cond.json';
 let globalNodes;
-const y = {
-  min: 0,
-  max: 0,
-};
 const x = {
-  min: 0,
   max: 0,
+  min: 0,
 };
-
+const y = {
+  max: 0,
+  min: 0,
+};
 // eslint-disable-next-line no-undef
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.5))
@@ -24,62 +25,26 @@ const svg = d3.select('body')
   .append('svg')
   .attr('class', 'svg');
 
-const elbow = (d) => {
-  if (!d.target.hide) { return `M${d.source.y},${d.source.x},L${d.target.y},${d.target.x}`; }
-  return '';
-};
+const gLink = svg.append('g')
+  .attr('class', 'link');
 
-function rotate(nodes) {
-  const curNodes = nodes;
-  const temp = curNodes.x;
-  curNodes.x = curNodes.y;
-  curNodes.y = temp;
-  if (curNodes.children !== undefined) {
-    curNodes.children.forEach((item) => {
-      rotate(item);
-    });
-  }
-  if (curNodes.data.field) {
-    curNodes.parent.children.forEach((child) => {
-      if (child.data.condition) {
-        curNodes.x -= 25;
-        curNodes.y -= 10;
-      }
-    });
-  }
-}
-
-function findMax(nodes) {
-  const curNodes = nodes;
-  if (curNodes.children === undefined) {
-    if (curNodes.x > x.max) {
-      x.max = curNodes.x;
-    }
-    if (curNodes.y > y.max) {
-      y.max = curNodes.y;
-    }
-    if (curNodes.y < y.min) {
-      y.min = curNodes.y;
-    }
-  } else {
-    curNodes.children.forEach((item) => {
-      findMax(item);
-    });
-  }
-}
+const gNode = svg.append('g')
+  .attr('class', 'node');
+// eslint-disable-next-line no-undef
+const diagonal = d3.linkVertical().x((d) => d.x).y((d) => d.y);
 
 function bigHelperAdd(d) {
   // eslint-disable-next-line no-undef
-  d3.select('body').append('div')
+  d3.select('body').select('svg').select('.node')
+    .append('foreignObject')
     .attr('class', 'bigHelper')
     .attr('id', d.data.id)
-    .append('foreignObject')
     .append('xhtml:body')
-    .html(`<ul> <li> Название: ${d.data.field} </li>
-      <li> Описание: ${d.data.description} </li> 
-      <li> Оператор: ${d.data.operator} </li>
-      <li> Значение: ${d.data.value} </li>
-      <li> Результат: ${d.data.count} </li> </ul>`);
+    .html(`Название: ${d.data.field} <br>
+     Описание: ${d.data.description} <br> 
+     Оператор: ${d.data.operator} <br>
+     Значение: ${d.data.value} <br>
+     Результат: ${d.data.count} <br>`);
 }
 
 function helpDisplay(d) {
@@ -95,49 +60,24 @@ function helpDisplay(d) {
   }
 }
 
-function click(d) {
-  const curD = d;
-  if (curD.children) {
-    curD.tempChildren = curD.children;
-    curD.children = undefined;
-  } else {
-    curD.children = curD.tempChildren;
-    curD.tempChildren = undefined;
+function nodeMove(node) {
+  const curNode = node;
+  if (curNode.children !== undefined && curNode.children !== null) {
+    curNode.children.forEach((item) => {
+      nodeMove(item);
+    });
   }
-  const page = document.getElementById('graph');
-  page.remove();
-  // eslint-disable-next-line no-use-before-define
-  treeBuilding(globalNodes, 0);
+  if (curNode.data.field) {
+    curNode.parent.children.forEach((child) => {
+      if (child.data.condition) {
+        curNode.x -= 10;
+        curNode.y -= 20;
+      }
+    });
+  }
 }
 
-function treeBuilding(nodes, invert = 1) {
-  const treeNodes = tree(nodes);
-  rotate(nodes);
-  if (invert) findMax(nodes);
-  globalNodes = nodes;
-  const height = x.max + 100;
-  const width = Math.abs(y.min) + y.max + 100;
-  svg.attr('width', width);
-  svg.attr('height', height);
-  // svg.attr('width', findMax(nodes));
-  const g = svg.append('g')
-    .attr('id', 'graph')
-    .attr('transform', `translate(${Math.abs(y.min) + 60},${30})`);
-  const link = g.selectAll('.link');
-
-  link.data(treeNodes.links())
-    .enter().append('path')
-    .attr('class', 'link')
-    .attr('stroke', 'red')
-    .attr('d', elbow);
-
-  const node = g.selectAll('.node')
-    .data(treeNodes.descendants())
-    .enter().append('g')
-    .on('click', click)
-    .attr('class', 'node')
-    .attr('transform', (d) => `translate(${d.y},${d.x})`);
-
+function nodeAdditions(node) {
   /* Общий круг узла */
   node.append('circle')
     .attr('r', 5)
@@ -146,21 +86,17 @@ function treeBuilding(nodes, invert = 1) {
     .attr('stroke-width', 1);
 
   /* Все узлы */
-  const divs = node.append('foreignObject')
+  const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
       if (d.data.condition && Number(d.data.count) === 1) { return 'cond on'; }
       if (d.data.condition) { return 'cond off'; }
       return 'dat';
-    })
-    .append('xhtml:div')
-    .attr('title', (d) => {
-      if (d.data.field) {
-        return `Описание: ${d.data.description} \nОператор: ${d.data.operator} \nЗначение: ${d.data.value} \nРезультат: ${d.data.count}`;
-      }
-      return `Результат: ${d.data.count}`;
-    })
+    });
+  const divs = foreignObject.append('xhtml:div')
+    .attr('data-tooltip', tooltipText)
     .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; });
   divs.append('text')
+    .attr('data-tooltip', tooltipText)
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
       return d.data.field;
@@ -170,11 +106,88 @@ function treeBuilding(nodes, invert = 1) {
     .text((d) => { if (d.data.description) { return `\n${d.data.description}`; } return ''; })
     .attr('class', (d) => { if (d.data.field) { return 'additionText'; } return ''; });
 
-  divs.append('xhtml:div')
+  foreignObject.append('xhtml:div')
+    .attr('data-tooltip', tooltipText)
     .attr('class', 'helper')
     .on('click', helpDisplay)
     .append('text')
     .text((d) => { if (d.data.field) { return '?'; } return ''; });
+}
+
+function settings() {
+  globalNodes.eachBefore((node) => {
+    if (node.y > y.max) y.max = node.y;
+    if (node.x < x.min) x.min = node.x;
+    if (node.x > x.max) x.max = node.x;
+  });
+  const height = y.max + 100;
+  const width = Math.abs(x.min) + x.max + 100;
+  svg.attr('width', width);
+  svg.attr('height', height);
+  gNode.attr('transform', `translate(${Math.abs(x.min) + 60},${30})`);
+  gLink.attr('transform', `translate(${Math.abs(x.min) + 60},${30})`);
+  /* left = globalNodes;
+  right = globalNodes;
+  width = right.x - left.x + margin.left + margin.right;
+  height = yMax + margin.top + margin.bottom + 100;
+  */
+}
+
+function treeBuilding(source) {
+  const nodes = globalNodes.descendants().reverse();
+  const links = globalNodes.links();
+  tree(globalNodes);
+  settings();
+  nodeMove(globalNodes);
+  const node = gNode.selectAll('g')
+    .data(nodes, (d) => d.id);
+  const nodeEnter = node.enter().append('g')
+    .attr('class', 'node')
+    .attr('transform', `translate(${source.x},${source.y})`)
+    .attr('fill-opacity', 0)
+    .attr('stroke-opacity', 0)
+    .on('click', (d) => {
+      const curD = d;
+      curD.children = d.children ? null : curD.tempChildren;
+      treeBuilding(d);
+    });
+
+  nodeAdditions(nodeEnter);
+
+  const link = gLink.selectAll('path')
+    .data(links, (d) => d.target.id);
+
+  const linkEnter = link.enter().append('path')
+    .attr('d', () => {
+      const o = { x: source.x, y: source.y };
+      return diagonal({ source: o, target: o });
+    });
+
+  node.merge(nodeEnter)
+    .attr('transform', (d) => `translate(${d.x},${d.y})`)
+    .attr('fill-opacity', 1)
+    .attr('stroke-opacity', 1);
+  node.exit().remove()
+    .attr('transform', `translate(${source.y},${source.x})`)
+    .attr('fill-opacity', 0)
+    .attr('stroke-opacity', 0);
+
+  link.merge(linkEnter)
+    .attr('d', diagonal);
+
+  // Transition exiting nodes to the parent's new position.
+  link.exit().remove()
+    .attr('d', () => {
+      const o = { x: source.y, y: source.x };
+      return diagonal({ source: o, target: o });
+    });
+
+  // Stash the old positions for transition.
+  globalNodes.eachBefore((d) => {
+    const curD = d;
+    curD.x0 = d.x;
+    curD.y0 = d.y;
+  });
 }
 
 function draw() {
@@ -184,7 +197,13 @@ function draw() {
     count.counting(json);
     // eslint-disable-next-line no-undef
     const nodes = d3.hierarchy(json, (d) => d.rules);
-    treeBuilding(nodes, 1);
+    globalNodes = nodes;
+    globalNodes.descendants().forEach((d, i) => {
+      const curD = d;
+      curD.id = i;
+      curD.tempChildren = curD.children;
+    });
+    treeBuilding(nodes);
   });
 }
 
