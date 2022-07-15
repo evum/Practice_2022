@@ -203,12 +203,9 @@ Div::-webkit-scrollbar {
 	position: absolute;
 	height: 50px;
 	width: 150px;
-	display: inline-block;
 	x: -75px;
 	y: 0;
-	display: inline-block;
 	overflow: hidden;
-	text-anchor: middle;
 	cursor: default;
 }
 

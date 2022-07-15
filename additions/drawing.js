@@ -21,7 +21,7 @@ const y = {
 // eslint-disable-next-line no-undef
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.5))
-  .nodeSize([85, 78]);
+  .nodeSize([85, 79]);
 
 // eslint-disable-next-line no-undef
 const svg = d3.select('body')
@@ -172,11 +172,6 @@ function settings() {
   svg.attr('height', height);
   gNode.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
   gLink.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
-  /* left = globalNodes;
-  right = globalNodes;
-  width = right.x - left.x + margin.left + margin.right;
-  height = yMax + margin.top + margin.bottom + 100;
-  */
 }
 
 function treeBuilding(source) {
@@ -224,14 +219,12 @@ function treeBuilding(source) {
   link.merge(linkEnter).transition(transition)
     .attr('d', diagonal);
 
-  // Transition exiting nodes to the parent's new position.
   link.exit().remove()
     .attr('d', () => {
       const o = { x: source.y, y: source.x };
       return diagonal({ source: o, target: o });
     });
 
-  // Stash the old positions for transition.
   globalNodes.eachBefore((d) => {
     const curD = d;
     curD.x0 = d.x;
