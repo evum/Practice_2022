@@ -2,7 +2,10 @@ let tooltipElem;
 
 export default function tooltipText(d) {
   if (d.data.field) {
-    return `Описание: ${d.data.description} <br>Оператор: ${d.data.operator} <br>Значение: ${d.data.value} <br>Результат: ${d.data.count}`;
+    return `Название: ${d.data.field} <br>Описание: ${d.data.description} <br>Оператор: ${d.data.operator} <br>Значение: ${d.data.value} <br>Результат: ${d.data.count}`;
+  }
+  if (d.data.result) {
+    return '';
   }
   return `Результат: ${d.data.count}`;
 }

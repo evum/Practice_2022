@@ -21,7 +21,7 @@ const y = {
 // eslint-disable-next-line no-undef
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.5))
-  .nodeSize([85, 80]);
+  .nodeSize([85, 78]);
 
 // eslint-disable-next-line no-undef
 const svg = d3.select('body')
@@ -39,7 +39,7 @@ const transition = svg.transition().duration(duration);
 
 function bigHelperAdd(d) {
   // eslint-disable-next-line no-undef
-  d3.select('body').select('svg').select('.node')
+  d3.select('body')
     .append('foreignObject')
     .attr('class', 'bigHelper')
     .attr('id', d.data.id)
@@ -100,31 +100,50 @@ function nodeAdditions(node) {
     });
   node.append('text')
     .text((d) => { if (d.data.field) { return ''; } return d.data.condition; })
-    .attr('x', -10)
-    .attr('y', 10)
+    .attr('x', (d) => { if (d.data.condition === 'OR') { return -8; } return -13; })
+    .attr('y', (d) => { if (d.data.condition === 'OR') { return 10; } return 13; })
     .attr('class', 'condText');
 
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
       if (d.data.field) { return 'dat'; }
+      if (d.data.result) { return 'result'; }
       return '';
     });
   const divs = foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
-    .attr('class', (d) => { if (d.data.field) { return 'datDiv'; } return 'condDiv'; });
+    .attr('class', (d) => {
+      if (d.data.field) { return 'datDiv'; }
+      if (d.data.result) { return 'resultDiv'; }
+      return 'condDiv';
+    });
   divs.append('text')
     .attr('data-tooltip', tooltipText)
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
+      if (d.data.result) { return d.data.result; }
       return d.data.field;
     })
-    .attr('class', (d) => { if (d.data.field) { return 'datText'; } return 'condText'; })
+    .attr('class', (d) => {
+      if (d.data.field) { return 'datText'; }
+      if (d.data.result) { return 'resultText'; }
+      return 'condText';
+    });
+  foreignObject.append('xhtml:div')
+    .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
     .append('text')
-    .text((d) => { if (d.data.description) { return `\n${d.data.description}`; } return ''; })
-    .attr('class', (d) => { if (d.data.field) { return 'additionText'; } return ''; });
+    .text((d) => {
+      if (d.data.description) { return `\n${d.data.description}`; }
+      if (d.data.level) { return d.data.level; }
+      return '';
+    })
+    .attr('class', (d) => {
+      if (d.data.field) { return 'additionDatText'; }
+      if (d.data.result) { return 'additionResText'; }
+      return '';
+    });
 
   foreignObject.append('xhtml:div')
-    .attr('data-tooltip', tooltipText)
     .attr('class', 'helper')
     .on('click', helpDisplay)
     .append('text')
@@ -137,12 +156,12 @@ function settings() {
     if (node.x < x.min) x.min = node.x;
     if (node.x > x.max) x.max = node.x;
   });
-  const height = y.max + 100;
+  const height = y.max + 150;
   const width = Math.abs(x.min) + x.max + 100;
   svg.attr('width', width);
   svg.attr('height', height);
-  gNode.attr('transform', `translate(${Math.abs(x.min) + 60},${30})`);
-  gLink.attr('transform', `translate(${Math.abs(x.min) + 60},${30})`);
+  gNode.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
+  gLink.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
   /* left = globalNodes;
   right = globalNodes;
   width = right.x - left.x + margin.left + margin.right;

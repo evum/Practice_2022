@@ -34,22 +34,22 @@
 .datDiv {
 	position: relative;
 	width: 100%;
-	height: 100%;
-	overflow: auto;
+	height: 30%;
+	top: 0%;
+	overflow: hidden;
 	vertical-align: middle;
+	text-align: center;
+	text-overflow: ellipsis;
 	margin: 1px;
 	overflow-wrap: break-word;
-	
+	white-space: nowrap;
 }
 
 /* Стиль для текста датчика */
 .datText {
-	position: absolute;
-	font-size: 12px;
+	position: relative;
+	font-size: 14px;
 	font-weight: bold;
-	top: 50%;
- 	left: 50%;
-  	transform: translate(-50%, -50%);
 }
 
 /* Стиль для узла условия */
@@ -90,16 +90,21 @@
 .condText {
 	position: relative;
 	font-size: 12px;
-	top: 12%;
-	x: -5px;
+	x: -50px;
 	y: -10;
 }
-.additionText {
+.additionDatText {
 	position: static;
-	font-size: 11px;
+	font-size: 14px;
 	font-weight: normal;
 	margin: 1px;
-	
+}
+.descDiv {
+	text-align: center;	
+	position: relative;
+	overflow: auto;
+	width: 100%;
+	height: 70%;
 }
 Div::-webkit-scrollbar {
 	width: 0px;
@@ -108,6 +113,7 @@ Div::-webkit-scrollbar {
 }
 
 .helper {
+	color: gray;
 	font-size: 11px;
 	font-weight: bold;
 	position: fixed;
@@ -120,13 +126,16 @@ Div::-webkit-scrollbar {
 
 	overflow: auto;
 	position: fixed;
-	width: 14em;
-	height: 7em;
+	width: auto;
+	height: auto;
 	border: solid;
 	border-radius: 5px;
-	box-sizing: border-box;
-	x: -570;
-	y: 470;
+	top: 80%;
+	left: 1%;
+	display: inline-block;
+	max-width: 25%;
+	max-height: 15%;
+
 }
 .bigHelperBody {
 	display: inline-block;
@@ -148,4 +157,43 @@ Div::-webkit-scrollbar {
 .nodePath {
 	stroke-width: 2;
 	fill: white;
+}
+
+.result {
+	border-radius: 5px;
+	width: 7em;
+	height: 5em;
+	border: 1px solid black;
+	text-anchor: middle;
+	background-color: lightcyan;
+	position: absolute;
+	x: -3.5em;
+	y: -2.5em;
+}
+.resultDiv {
+	position: relative;
+	width: 100%;
+	height: 70%;
+	overflow: auto;
+	vertical-align: middle;
+	margin: 1px;
+	overflow-wrap: break-word;
+}
+.resultText {
+	position: absolute;
+	font-size: 12px;
+	font-weight: bold;
+	top: 50%;
+ 	left: 50%;
+  	transform: translate(-50%, -50%);
+}
+
+.levelDiv {
+	position: absolute;
+	top: 70%;
+	height: 30%;
+	width: 100%;
+	text-align: center;
+	border-top: 1px solid black;
+
 }
