@@ -4,7 +4,7 @@ export default function tooltipText(d) {
   if (d.data.field) {
     return `Название: ${d.data.field} <br>Описание: ${d.data.description} <br>Оператор: ${d.data.operator} <br>Значение: ${d.data.value} <br>Результат: ${d.data.count}`;
   }
-  if (d.data.result) {
+  if (d.data.result || d.data.comment) {
     return '';
   }
   return `Результат: ${d.data.count}`;

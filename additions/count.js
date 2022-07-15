@@ -1,6 +1,7 @@
 const numbers = [1, 1, 2, 3, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1];
 function logOperations(value, operator, control = 0) {
   let flag;
+  let counter;
   const numberValue = Number(value);
   const numberControl = Number(control);
   switch (operator) {
@@ -13,10 +14,19 @@ function logOperations(value, operator, control = 0) {
       flag = 0;
       value.forEach((item) => { if (item) flag = 1; });
       return flag;
-
     case 'NOT':
       if (numberValue === 1) return 0;
       return 1;
+    case 'ANY':
+      counter = 0;
+      flag = 0;
+      Array.from(value).forEach((valueNum) => {
+        if (valueNum) {
+          counter += 1;
+        }
+      });
+      if (counter >= numberControl) flag = 1;
+      return flag;
     case '<':
       if (value < control) { return 1; } return 0;
     case '>':
@@ -45,7 +55,11 @@ function counting(node) {
   curNode.rules.forEach((item) => {
     mas.push(Number(item.count));
   });
-  curNode.count = logOperations(mas, curNode.condition);
+  if (curNode.value !== undefined) {
+    curNode.count = logOperations(mas, curNode.condition, curNode.value);
+  } else {
+    curNode.count = logOperations(mas, curNode.condition);
+  }
 }
 
 export default {

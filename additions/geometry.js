@@ -7,13 +7,13 @@ function and() {
 }
 
 function not() {
-  return `M${-25},${7}C${-25},${30},${25},${30},${25},${7}C${25},${-11},${-25},${-11},${-25},${7}`;
+  return `M${-25},${10}C${-25},${30},${25},${30},${25},${10}C${25},${-8},${-25},${-8},${-25},${10}`;
 }
 
 function distribut(d) {
   if (d.data.condition === 'AND') return and();
   if (d.data.condition === 'OR') return or();
-  if (d.data.condition === 'NOT') return not();
+  if (d.data.condition === 'NOT' || d.data.condition === 'ANY') return not();
   return '';
 }
 

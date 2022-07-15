@@ -85,12 +85,12 @@ function nodeMove(node) {
 function nodeAdditions(node) {
   /* Общий круг узла */
   node.append('circle')
-    .attr('r', 5)
+    .attr('r', (d) => { if (d.data.field) { return 5; } return 0; })
     .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
     .attr('stroke', 'black')
     .attr('stroke-width', 1);
 
-  /* Все узлы */
+  /* Отрисовка узлов логических операторов */
   node.append('path')
     .attr('d', geometry.distribut)
     .attr('class', (d) => {
@@ -98,23 +98,30 @@ function nodeAdditions(node) {
       if (d.data.condition) { return 'nodePath off'; }
       return '';
     });
+  /* Текст на узлах логических операторов */
   node.append('text')
-    .text((d) => { if (d.data.field) { return ''; } return d.data.condition; })
+    .text((d) => {
+      if (d.data.condition) { return d.data.condition; }
+      return '';
+    })
     .attr('x', (d) => { if (d.data.condition === 'OR') { return -8; } return -13; })
     .attr('y', (d) => { if (d.data.condition === 'OR') { return 10; } return 13; })
     .attr('class', 'condText');
-
+  /* Конейнеры для всех узлов, кроме логических  */
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
       if (d.data.field) { return 'dat'; }
       if (d.data.result) { return 'result'; }
+      if (d.data.comment) { return 'com'; }
       return '';
     });
+  /* Отрисовка текста + div для всех узлов, кроме логических */
   const divs = foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
     .attr('class', (d) => {
       if (d.data.field) { return 'datDiv'; }
       if (d.data.result) { return 'resultDiv'; }
+      if (d.data.comment) { return 'comDiv'; }
       return 'condDiv';
     });
   divs.append('text')
@@ -122,13 +129,16 @@ function nodeAdditions(node) {
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
       if (d.data.result) { return d.data.result; }
+      if (d.data.comment) { return d.data.comment; }
       return d.data.field;
     })
     .attr('class', (d) => {
       if (d.data.field) { return 'datText'; }
       if (d.data.result) { return 'resultText'; }
+      if (d.data.comment) { return 'comText'; }
       return 'condText';
     });
+  /* Отрисовка дополниельной секции текста на начальных узлах и датчиков */
   foreignObject.append('xhtml:div')
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
     .append('text')
@@ -142,7 +152,7 @@ function nodeAdditions(node) {
       if (d.data.result) { return 'additionResText'; }
       return '';
     });
-
+  /* Добавление подсказки - знака вопроса на узлах датчиков */
   foreignObject.append('xhtml:div')
     .attr('class', 'helper')
     .on('click', helpDisplay)
@@ -184,6 +194,9 @@ function treeBuilding(source) {
     .attr('stroke-opacity', 0)
     .on('click', (d) => {
       const curD = d;
+      if (curD.comment) {
+        return;
+      }
       curD.children = d.children ? null : curD.tempChildren;
       treeBuilding(d);
     });

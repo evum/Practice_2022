@@ -99,6 +99,7 @@
 	font-weight: normal;
 	margin: 1px;
 }
+
 .descDiv {
 	text-align: center;	
 	position: relative;
@@ -148,7 +149,7 @@ Div::-webkit-scrollbar {
 	border: 1px solid #b3c9ce;
 	border-radius: 4px;
 	text-align: center;
-	font: italic 14px/1.3 sans-serif;
+	font: 14px sans-serif;
 	color: #333;
 	background: #fff;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
@@ -196,4 +197,33 @@ Div::-webkit-scrollbar {
 	text-align: center;
 	border-top: 1px solid black;
 
+}
+
+.com {
+	position: absolute;
+	height: 50px;
+	width: 150px;
+	display: inline-block;
+	x: -75px;
+	y: 0;
+	display: inline-block;
+	overflow: hidden;
+	text-anchor: middle;
+	cursor: default;
+}
+
+.comDiv {
+	text-align: center;
+	display: inline-block;
+	height: auto;
+	width: 100%;
+	background-color: white;
+	padding-bottom: 4px;
+
+
+}
+
+.comText {
+	display: inline-block;
+	cursor: pointer;
 }
