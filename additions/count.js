@@ -45,7 +45,7 @@ function logOperations(value, operator, control = 0) {
 function counting(node) {
   const curNode = node;
   if (curNode.rules == null) {
-    curNode.count = logOperations(numbers[curNode.id], curNode.operator, curNode.value);
+    curNode.count = logOperations(curNode.number, curNode.operator, curNode.value);
     return;
   }
   curNode.rules.forEach((item) => {

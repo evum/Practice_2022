@@ -15,7 +15,9 @@
                         "id": "1",
                         "field": "давление1",
                         "type": "string",
-                        "description": "датчик давления 1"
+                        "description": "датчик давления 1",
+                        "alert": "1",
+                        "number": "1"
                     }, {
                         "out": "state",
                         "operator": "in",
@@ -24,7 +26,9 @@
                         "id": "2",
                         "type": "string",
                         "field": "давление2",
-                        "description": "датчик давления 2"
+                        "description": "датчик давления 2",
+                        "alert": "2",
+                        "number": "1"
                     }, {
                         "out": "state",
                         "value": "[2, 3]",
@@ -33,7 +37,9 @@
                         "type": "string",
                         "field": "давление3",
                         "id": "3",
-                        "description": "датчик давления 3"
+                        "description": "датчик давления 3",
+                        "alert": "3",
+                        "number": "2"
                     }, {
                         "subalert": "rtn-subalert",
                         "id": "4",
@@ -42,7 +48,10 @@
                         "out": "state",
                         "operator": "in",
                         "value": "[2, 3]",
-                        "description": "датчик давления 4"
+                        "description": "датчик давления 4",
+                        "alert": "0",
+                        "number": "3"
+
                     }, {
                         "value": "[2, 3]",
                         "operator": "in",
@@ -51,7 +60,9 @@
                         "field": "давление5",
                         "type": "string",
                         "subalert": "rtn-subalert",
-                        "description": "датчик давления 5"
+                        "description": "датчик давления 5",
+                        "alert": "4",
+                        "number": "2"
                     }, {
                         "subalert": "rtn-subalert",
                         "field": "давление6",
@@ -60,7 +71,9 @@
                         "out": "state",
                         "operator": "in",
                         "value": "[2, 3]",
-                        "description": "датчик давления 6"
+                        "description": "датчик давления 6",
+                        "alert": "5",
+                        "number": "2"
                     }, {
                         "out": "state",
                         "value": "[2, 3]",
@@ -69,7 +82,9 @@
                         "id": "7",
                         "field": "давление7",
                         "type": "string",
-                        "description": "датчик давления 7"
+                        "description": "датчик давления 7",
+                        "alert": "6",
+                        "number": "1"
                     }, {
                         "type": "string",
                         "field": "давление8",
@@ -78,7 +93,9 @@
                         "operator": "in",
                         "value": "[2, 3]",
                         "out": "state",
-                        "description": "датчик давления 8"
+                        "description": "датчик давления 8",
+                        "alert": "6",
+                        "number": "1"
                     }],
                     "condition": "OR"
                 }, {
@@ -91,7 +108,9 @@
                         "value": "1",
                         "operator": "==",
                         "out": "state",
-                        "description": "датчик разрушения двигателя 1"
+                        "description": "датчик разрушения двигателя 1",
+                        "alert": "7",
+                        "number": "1"
                     }, {
                         "rules": [{
                             "condition": "OR",
@@ -103,7 +122,9 @@
                                 "out": "state",
                                 "operator": "in",
                                 "value": "[2, 3, 5]",
-                                "description": "датчик температуры 1"
+                                "description": "датчик температуры 1",
+                                "alert": "1",
+                                "number": "1"
                             }, {
                                 "condition": "OR",
                                 "rules": [{
@@ -116,7 +137,9 @@
                                             "type": "string",
                                             "field": "давление9",
                                             "subalert": "rtn-subalert",
-                                            "description": "датчик давления 9"
+                                            "description": "датчик давления 9",
+                                            "alert": "1",
+                                            "number": "1"
                                         }, {
                                             "operator": "==",
                                             "value": "1",
@@ -125,7 +148,9 @@
                                             "type": "string",
                                             "field": "давление10",
                                             "subalert": "rtn-subalert",
-                                            "description": "датчик давления 10"
+                                            "description": "датчик давления 10",
+                                            "alert": "1",
+                                            "number": "1"
                                         }],
                                         "condition": "AND"
                                     }, {
@@ -137,7 +162,9 @@
                                             "field": "температура2",
                                             "type": "string",
                                             "subalert": "rtn-subalert",
-                                            "description": "датчик температуры 2"
+                                            "description": "датчик температуры 2",
+                                            "alert": "2",
+                                            "number": "1"
                                         }, {
                                             "operator": "<",
                                             "value": "300",
@@ -146,7 +173,9 @@
                                             "field": "температура3",
                                             "type": "string",
                                             "subalert": "rtn-subalert",
-                                            "description": "датчик температуры 3"
+                                            "description": "датчик температуры 3",
+                                            "alert": "2",
+                                            "number": "0"
                                         }],
                                         "condition": "AND"
                                     }, {
@@ -157,7 +186,9 @@
                                         "operator": "<",
                                         "value": "120",
                                         "out": "value",
-                                        "description": "датчик давления 11"
+                                        "description": "датчик давления 11",
+                                        "alert": "2",
+                                        "number": "0"
                                     }],
                                     "condition": "OR"
                                 }, {
@@ -170,7 +201,9 @@
                                         "operator": ">",
                                         "value": "87",
                                         "out": "value",
-                                        "description": "датчик температуры 4"
+                                        "description": "датчик температуры 4",
+                                        "alert": "2",
+                                        "number": "0"
                                     }, {
                                         "out": "value",
                                         "operator": ">",
@@ -179,7 +212,9 @@
                                         "type": "string",
                                         "field": "температура5",
                                         "id": "17",
-                                        "description": "датчик температуры 5"
+                                        "description": "датчик температуры 5",
+                                        "alert": "2",
+                                        "number": "0"
         
                                     }, {
                                         "subalert": "rtn-subalert",
@@ -189,7 +224,9 @@
                                         "out": "value",
                                         "value": "80",
                                         "operator": ">",
-                                        "description": "датчик температуры 6"
+                                        "description": "датчик температуры 6",
+                                        "alert": "2",
+                                        "number": "1"
                                     }, {
                                         "out": "value",
                                         "value": "8.5",
@@ -198,7 +235,9 @@
                                         "field": "давление7",
                                         "type": "string",
                                         "id": "19",
-                                        "description": "датчик давления 7"
+                                        "description": "датчик давления 7",
+                                        "alert": "2",
+                                        "number": "0"
                                     }, {
                                         "out": "value",
                                         "operator": ">",
@@ -207,7 +246,10 @@
                                         "type": "string",
                                         "field": "давление8",
                                         "id": "20",
-                                        "description": "датчик давления 8"
+                                        "description": "датчик давления 8",
+                                        "alert": "2",
+                                        "number": "1"
+
                                     }]
                                 }]
                             }]

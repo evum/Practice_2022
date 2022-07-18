@@ -3,12 +3,16 @@
 }
 /* Стиль для узла */
 .node {
-	position: absolute;
+	position: relative;
 	border: solid 1px black;
 	width: 30px;
     height: 2px;
 	pointer-events: all;
 	cursor: pointer;
+}
+
+.circle {
+	position: relative;
 }
 /* Стиль для линии */
 .link {
@@ -21,13 +25,13 @@
 	border-radius: 10px;
 	width: 5em;
 	height: 4em;
-	border: 1px solid black;
 	text-anchor: middle;
-	background-color: Gainsboro;
-	position: absolute;
+	position: relative;
 	cursor: pointer;
 	x: -2.5em;
-	y: 5;
+	y: 0;
+	padding: 1px;
+
 }
 
 /* Стиль для div'а датчика */
@@ -43,6 +47,7 @@
 	margin: 1px;
 	overflow-wrap: break-word;
 	white-space: nowrap;
+
 }
 
 /* Стиль для текста датчика */
@@ -97,7 +102,6 @@
 	position: static;
 	font-size: 14px;
 	font-weight: normal;
-	margin: 1px;
 }
 
 .descDiv {
@@ -105,7 +109,8 @@
 	position: relative;
 	overflow: auto;
 	width: 100%;
-	height: 70%;
+	height: 65%;
+	
 }
 Div::-webkit-scrollbar {
 	width: 0px;
@@ -131,24 +136,24 @@ Div::-webkit-scrollbar {
 	height: auto;
 	border: solid;
 	border-radius: 5px;
-	top: 80%;
+	top: 73%;
 	left: 1%;
 	display: inline-block;
 	max-width: 25%;
-	max-height: 15%;
+	max-height: 25%;
 
 }
 .bigHelperBody {
 	display: inline-block;
 
-	font-size: 14px;
+	font-size: 16px;
 }
 .tooltip {
 	position: fixed;
 	padding: 1px 2px;
 	border: 1px solid #b3c9ce;
 	border-radius: 4px;
-	text-align: center;
+	text-align: left;
 	font: 14px sans-serif;
 	color: #333;
 	background: #fff;
@@ -223,4 +228,8 @@ Div::-webkit-scrollbar {
 .comText {
 	display: inline-block;
 	cursor: pointer;
+}
+
+.anyValue {
+	font-size: 12px;
 }

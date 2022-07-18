@@ -20,7 +20,7 @@ const y = {
 };
 // eslint-disable-next-line no-undef
 const tree = d3.tree()
-  .separation((a, b) => (a.parent === b.parent ? 1 : 1.5))
+  .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
   .nodeSize([85, 79]);
 
 // eslint-disable-next-line no-undef
@@ -48,8 +48,10 @@ function bigHelperAdd(d) {
     .html(`Название: ${d.data.field} <br>
      Описание: ${d.data.description} <br> 
      Оператор: ${d.data.operator} <br>
-     Значение: ${d.data.value} <br>
-     Результат: ${d.data.count} <br>`);
+     Контроль: ${d.data.value} <br>
+     Результат: ${d.data.count} <br>
+     Значение: ${d.data.number} <br>
+     Тип значения: ${d.data.out}`);
 }
 
 function helpDisplay(d) {
@@ -82,14 +84,64 @@ function nodeMove(node) {
   }
 }
 
-function nodeAdditions(node) {
-  /* Общий круг узла */
-  node.append('circle')
-    .attr('r', (d) => { if (d.data.field) { return 5; } return 0; })
-    .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
-    .attr('stroke', 'black')
-    .attr('stroke-width', 1);
+function borderColoring(d) {
+  if (d.data.field) {
+    switch (d.data.alert) {
+      case '0':
+        return '1px solid blue';
+      case '1':
+        return '1px solid green';
+      case '2':
+        return '1px solid yellow';
+      case '3':
+        return '1px solid red';
+      case '4':
+        return '1px solid darkRed';
+      case '5':
+        return '1px solid Gainsboro';
+      case '6':
+        return '1px solid black';
+      case '7':
+        return '1px solid LightGray';
+      default:
+        return '1px solid white';
+    }
+  }
+  return '';
+}
 
+function backColoring(d) {
+  if (d.data.field) {
+    switch (d.data.alert) {
+      case '0':
+        return 'LightSkyBlue';
+      case '1':
+        return 'LightGreen';
+      case '2':
+        return 'Gold';
+      case '3':
+        return 'DarkRed';
+      case '4':
+        return 'Red';
+      case '5':
+        return 'DarkGray';
+      case '6':
+        return 'black';
+      case '7':
+        return 'white';
+      default:
+        return 'white';
+    }
+  }
+  return '';
+}
+
+function textColoring(d) {
+  if (d.data.alert === '6' || d.data.alert === '3') return 'LightGrey';
+  return 'black';
+}
+
+function nodeAdditions(node) {
   /* Отрисовка узлов логических операторов */
   node.append('path')
     .attr('d', geometry.distribut)
@@ -98,15 +150,25 @@ function nodeAdditions(node) {
       if (d.data.condition) { return 'nodePath off'; }
       return '';
     });
+
   /* Текст на узлах логических операторов */
   node.append('text')
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
+      if (d.data.condition) { return d.data.condition; }
       return '';
     })
     .attr('x', (d) => { if (d.data.condition === 'OR') { return -8; } return -13; })
-    .attr('y', (d) => { if (d.data.condition === 'OR') { return 10; } return 13; })
+    .attr('y', (d) => {
+      if (d.data.condition === 'OR' || d.data.condition === 'ANY') return 10;
+      return 13;
+    })
     .attr('class', 'condText');
+  node.append('text')
+    .text((d) => { if (d.data.condition === 'ANY') { return `(${d.data.value})`; } return ''; })
+    .attr('class', 'anyValue')
+    .attr('y', 20)
+    .attr('x', -7);
   /* Конейнеры для всех узлов, кроме логических  */
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
@@ -114,16 +176,18 @@ function nodeAdditions(node) {
       if (d.data.result) { return 'result'; }
       if (d.data.comment) { return 'com'; }
       return '';
-    });
+    })
+    .attr('style', (d) => `border:${borderColoring(d)}; background-color:${backColoring(d)}; color:${textColoring(d)}`);
   /* Отрисовка текста + div для всех узлов, кроме логических */
   const divs = foreignObject.append('xhtml:div')
-    .attr('data-tooltip', tooltipText)
     .attr('class', (d) => {
       if (d.data.field) { return 'datDiv'; }
       if (d.data.result) { return 'resultDiv'; }
       if (d.data.comment) { return 'comDiv'; }
       return 'condDiv';
-    });
+    })
+    .attr('data-tooltip', tooltipText)
+    .on('click', (d) => { if (d.data.field) return helpDisplay; return ''; });
   divs.append('text')
     .attr('data-tooltip', tooltipText)
     .text((d) => {
@@ -140,8 +204,11 @@ function nodeAdditions(node) {
     });
   /* Отрисовка дополниельной секции текста на начальных узлах и датчиков */
   foreignObject.append('xhtml:div')
+    .attr('data-tooltip', tooltipText)
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
+    .on('click', helpDisplay)
     .append('text')
+    .attr('data-tooltip', tooltipText)
     .text((d) => {
       if (d.data.description) { return `\n${d.data.description}`; }
       if (d.data.level) { return d.data.level; }
@@ -152,12 +219,13 @@ function nodeAdditions(node) {
       if (d.data.result) { return 'additionResText'; }
       return '';
     });
-  /* Добавление подсказки - знака вопроса на узлах датчиков */
-  foreignObject.append('xhtml:div')
-    .attr('class', 'helper')
-    .on('click', helpDisplay)
-    .append('text')
-    .text((d) => { if (d.data.field) { return '?'; } return ''; });
+  /* Общий круг узла */
+  node.append('circle')
+    .attr('r', (d) => { if (d.data.field) { return 5; } return 0; })
+    .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1)
+    .attr('class', 'circle');
 }
 
 function settings() {
@@ -200,11 +268,14 @@ function treeBuilding(source) {
 
   const link = gLink.selectAll('path')
     .data(links, (d) => d.target.id);
-
   const linkEnter = link.enter().append('path')
     .attr('d', () => {
       const o = { x: source.x, y: source.y };
       return diagonal({ source: o, target: o });
+    })
+    .attr('style', (d) => {
+      if (d.target.data.count === 1 || (d.target.data.comment && d.target.children[0].data.count === 1)) return 'stroke:red';
+      return 'stroke:#ccc';
     });
 
   node.merge(nodeEnter).transition(transition)
