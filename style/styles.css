@@ -134,7 +134,7 @@ Div::-webkit-scrollbar {
 	position: fixed;
 	width: auto;
 	height: auto;
-	border: solid;
+	border: 1px solid black;
 	border-radius: 5px;
 	top: 73%;
 	left: 1%;
@@ -232,4 +232,10 @@ Div::-webkit-scrollbar {
 
 .anyValue {
 	font-size: 12px;
+}
+
+.collapseFlag {
+	stroke-width: 1px;
+	fill: black;
+	stroke: black;
 }

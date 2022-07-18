@@ -84,62 +84,62 @@ function nodeMove(node) {
   }
 }
 
-function borderColoring(d) {
-  if (d.data.field) {
-    switch (d.data.alert) {
-      case '0':
-        return '1px solid blue';
-      case '1':
-        return '1px solid green';
-      case '2':
-        return '1px solid yellow';
-      case '3':
-        return '1px solid red';
-      case '4':
-        return '1px solid darkRed';
-      case '5':
-        return '1px solid Gainsboro';
-      case '6':
-        return '1px solid black';
-      case '7':
-        return '1px solid LightGray';
-      default:
-        return '1px solid white';
+const coloring = {
+  border: (d) => {
+    if (d.data.field) {
+      switch (d.data.alert) {
+        case '0':
+          return '1px solid blue';
+        case '1':
+          return '1px solid green';
+        case '2':
+          return '1px solid yellow';
+        case '3':
+          return '1px solid red';
+        case '4':
+          return '1px solid darkRed';
+        case '5':
+          return '1px solid Gainsboro';
+        case '6':
+          return '1px solid black';
+        case '7':
+          return '1px solid LightGray';
+        default:
+          return '1px solid white';
+      }
     }
-  }
-  return '';
-}
-
-function backColoring(d) {
-  if (d.data.field) {
-    switch (d.data.alert) {
-      case '0':
-        return 'LightSkyBlue';
-      case '1':
-        return 'LightGreen';
-      case '2':
-        return 'Gold';
-      case '3':
-        return 'DarkRed';
-      case '4':
-        return 'Red';
-      case '5':
-        return 'DarkGray';
-      case '6':
-        return 'black';
-      case '7':
-        return 'white';
-      default:
-        return 'white';
+    return '';
+  },
+  background: (d) => {
+    if (d.data.field) {
+      switch (d.data.alert) {
+        case '0':
+          return 'LightSkyBlue';
+        case '1':
+          return 'LightGreen';
+        case '2':
+          return 'Gold';
+        case '3':
+          return 'red';
+        case '4':
+          return 'DarkRed';
+        case '5':
+          return 'DarkGray';
+        case '6':
+          return 'black';
+        case '7':
+          return 'white';
+        default:
+          return 'white';
+      }
     }
-  }
-  return '';
-}
-
-function textColoring(d) {
-  if (d.data.alert === '6' || d.data.alert === '3') return 'LightGrey';
-  return 'black';
-}
+    return '';
+  },
+  text: (d) => {
+    if (d.data.alert === '6' || d.data.alert === '4') return 'LightGrey';
+    return 'black';
+  },
+};
 
 function nodeAdditions(node) {
   /* Отрисовка узлов логических операторов */
@@ -155,7 +155,6 @@ function nodeAdditions(node) {
   node.append('text')
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
-      if (d.data.condition) { return d.data.condition; }
       return '';
     })
     .attr('x', (d) => { if (d.data.condition === 'OR') { return -8; } return -13; })
@@ -165,11 +164,14 @@ function nodeAdditions(node) {
     })
     .attr('class', 'condText');
   node.append('text')
-    .text((d) => { if (d.data.condition === 'ANY') { return `(${d.data.value})`; } return ''; })
+    .text((d) => {
+      if (d.data.condition === 'ANY') return `(${d.data.value})`;
+      return '';
+    })
     .attr('class', 'anyValue')
     .attr('y', 20)
     .attr('x', -7);
-  /* Конейнеры для всех узлов, кроме логических  */
+  /* Контейнеры для всех узлов, кроме логических  */
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
       if (d.data.field) { return 'dat'; }
@@ -177,7 +179,7 @@ function nodeAdditions(node) {
       if (d.data.comment) { return 'com'; }
       return '';
     })
-    .attr('style', (d) => `border:${borderColoring(d)}; background-color:${backColoring(d)}; color:${textColoring(d)}`);
+    .attr('style', (d) => `border:${coloring.border(d)}; background-color:${coloring.background(d)}; color:${coloring.text(d)}`);
   /* Отрисовка текста + div для всех узлов, кроме логических */
   const divs = foreignObject.append('xhtml:div')
     .attr('class', (d) => {
@@ -189,6 +191,7 @@ function nodeAdditions(node) {
     .attr('data-tooltip', tooltipText)
     .on('click', (d) => { if (d.data.field) return helpDisplay; return ''; });
   divs.append('text')
+    .on('click', (d) => { if (d.data.field) helpDisplay(d); })
     .attr('data-tooltip', tooltipText)
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
@@ -206,7 +209,7 @@ function nodeAdditions(node) {
   foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
-    .on('click', helpDisplay)
+    .on('click', (d) => { if (d.data.field) helpDisplay(d); })
     .append('text')
     .attr('data-tooltip', tooltipText)
     .text((d) => {
@@ -226,6 +229,13 @@ function nodeAdditions(node) {
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('class', 'circle');
+  node.append('path')
+    .attr('d', (d) => {
+      if (d.children === null && d.data.condition === 'OR') return `M${0},${20}L${0},${30}M${-5},${25}L${5},${25}`;
+      if (d.children === null) return `M${0},${35}L${0},${45}M${-5},${40}L${5},${40}`;
+      return '';
+    })
+    .attr('class', 'collapseFlag');
 }
 
 function settings() {
@@ -257,11 +267,12 @@ function treeBuilding(source) {
     .attr('stroke-opacity', 0)
     .on('click', (d) => {
       const curD = d;
-      if (curD.comment) {
-        return;
-      }
+      document.querySelectorAll('.collapseFlag').forEach((elem) => {
+        elem.parentNode.removeChild(elem);
+      });
       curD.children = d.children ? null : curD.tempChildren;
-      treeBuilding(d);
+      nodeAdditions(nodeEnter);
+      treeBuilding(curD);
     });
 
   nodeAdditions(nodeEnter);
