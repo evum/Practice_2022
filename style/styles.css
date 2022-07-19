@@ -23,7 +23,7 @@
 /* Стиль для узла датчика */
 .dat {
 	border-radius: 10px;
-	width: 5em;
+	width: 80px;
 	height: 4em;
 	text-anchor: middle;
 	position: relative;
@@ -141,6 +141,7 @@ Div::-webkit-scrollbar {
 	display: inline-block;
 	max-width: 25%;
 	max-height: 25%;
+	background-color: white;
 
 }
 .bigHelperBody {
@@ -161,8 +162,7 @@ Div::-webkit-scrollbar {
 }
 
 .nodePath {
-	stroke-width: 2;
-	fill: white;
+	stroke-width: 2px;
 }
 
 .result {
@@ -207,8 +207,6 @@ Div::-webkit-scrollbar {
 .com {
 	position: absolute;
 	height: 50px;
-	width: 150px;
-	x: -75px;
 	y: 0;
 	overflow: hidden;
 	cursor: default;
@@ -218,10 +216,9 @@ Div::-webkit-scrollbar {
 	text-align: center;
 	display: inline-block;
 	height: auto;
-	width: 100%;
 	background-color: white;
 	padding-bottom: 4px;
-
+	width: 100%;
 
 }
 
@@ -232,10 +229,4 @@ Div::-webkit-scrollbar {
 
 .anyValue {
 	font-size: 12px;
-}
-
-.collapseFlag {
-	stroke-width: 1px;
-	fill: black;
-	stroke: black;
 }

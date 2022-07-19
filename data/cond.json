@@ -8,62 +8,78 @@
             {
                 "rules": [{
                     "rules": [{
-                        "out": "state",
-                        "value": "[2, 3]",
-                        "operator": "in",
-                        "subalert": "rtn-subalert",
-                        "id": "1",
-                        "field": "давление1",
-                        "type": "string",
-                        "description": "датчик давления 1",
-                        "alert": "1",
-                        "number": "1"
+                        "comment": "Возгорание двигателя",
+                        "rules": [{
+                            "out": "state",
+                            "value": "[2, 3]",
+                            "operator": "in",
+                            "subalert": "rtn-subalert",
+                            "id": "1",
+                            "field": "давление1",
+                            "type": "string",
+                            "description": "датчик давления 1",
+                            "alert": "1",
+                            "number": "1"
+                        }]
                     }, {
-                        "out": "state",
-                        "operator": "in",
-                        "value": "[2, 3]",
-                        "subalert": "rtn-subalert",
-                        "id": "2",
-                        "type": "string",
-                        "field": "давление2",
-                        "description": "датчик давления 2",
-                        "alert": "2",
-                        "number": "1"
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
+                            "out": "state",
+                            "operator": "in",
+                            "value": "[2, 3]",
+                            "subalert": "rtn-subalert",
+                            "id": "2",
+                            "type": "string",
+                            "field": "давление2",
+                            "description": "датчик давления 2",
+                            "alert": "2",
+                            "number": "1"
+                        }]
                     }, {
-                        "out": "state",
-                        "value": "[2, 3]",
-                        "operator": "in",
-                        "subalert": "rtn-subalert",
-                        "type": "string",
-                        "field": "давление3",
-                        "id": "3",
-                        "description": "датчик давления 3",
-                        "alert": "3",
-                        "number": "2"
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
+                            "out": "state",
+                            "value": "[2, 3]",
+                            "operator": "in",
+                            "subalert": "rtn-subalert",
+                            "type": "string",
+                            "field": "давление3",
+                            "id": "3",
+                            "description": "датчик давления 3",
+                            "alert": "3",
+                            "number": "2"
+                        }]
                     }, {
-                        "subalert": "rtn-subalert",
-                        "id": "4",
-                        "field": "давление4",
-                        "type": "string",
-                        "out": "state",
-                        "operator": "in",
-                        "value": "[2, 3]",
-                        "description": "датчик давления 4",
-                        "alert": "0",
-                        "number": "3"
-
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
+                            "subalert": "rtn-subalert",
+                            "id": "4",
+                            "field": "давление4",
+                            "type": "string",
+                            "out": "state",
+                            "operator": "in",
+                            "value": "[2, 3]",
+                            "description": "датчик давления 4",
+                            "alert": "0",
+                            "number": "3"
+                        }]
                     }, {
-                        "value": "[2, 3]",
-                        "operator": "in",
-                        "out": "state",
-                        "id": "5",
-                        "field": "давление5",
-                        "type": "string",
-                        "subalert": "rtn-subalert",
-                        "description": "датчик давления 5",
-                        "alert": "4",
-                        "number": "2"
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
+                            "value": "[2, 3]",
+                            "operator": "in",
+                            "out": "state",
+                            "id": "5",
+                            "field": "давление5",
+                            "type": "string",
+                            "subalert": "rtn-subalert",
+                            "description": "датчик давления 5",
+                            "alert": "4",
+                            "number": "2"
+                        }]
                     }, {
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
                         "subalert": "rtn-subalert",
                         "field": "давление6",
                         "type": "string",
@@ -74,28 +90,35 @@
                         "description": "датчик давления 6",
                         "alert": "5",
                         "number": "2"
+                        }]
                     }, {
-                        "out": "state",
-                        "value": "[2, 3]",
-                        "operator": "in",
-                        "subalert": "rtn-subalert",
-                        "id": "7",
-                        "field": "давление7",
-                        "type": "string",
-                        "description": "датчик давления 7",
-                        "alert": "6",
-                        "number": "1"
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
+                            "out": "state",
+                            "value": "[2, 3]",
+                            "operator": "in",
+                            "subalert": "rtn-subalert",
+                            "id": "7",
+                            "field": "давление7",
+                            "type": "string",
+                            "description": "датчик давления 7",
+                            "alert": "6",
+                            "number": "1"
+                        }]
                     }, {
-                        "type": "string",
-                        "field": "давление8",
-                        "id": "8",
-                        "subalert": "rtn-subalert",
-                        "operator": "in",
-                        "value": "[2, 3]",
-                        "out": "state",
-                        "description": "датчик давления 8",
-                        "alert": "6",
-                        "number": "1"
+                        "comment":"Возгорание двигателя",
+                        "rules": [{
+                            "type": "string",
+                            "field": "давление8",
+                            "id": "8",
+                            "subalert": "rtn-subalert",
+                            "operator": "in",
+                            "value": "[2, 3]",
+                            "out": "state",
+                            "description": "датчик давления 8",
+                            "alert": "6",
+                            "number": "1"
+                        }]
                     }],
                     "condition": "OR"
                 }, {
@@ -112,149 +135,152 @@
                         "alert": "7",
                         "number": "1"
                     }, {
+                        "comment":"Возгорание двигателя",
                         "rules": [{
-                            "condition": "OR",
                             "rules": [{
-                                "subalert": "rtn-subalert",
-                                "field": "температура1",
-                                "type": "string",
-                                "id": "10",
-                                "out": "state",
-                                "operator": "in",
-                                "value": "[2, 3, 5]",
-                                "description": "датчик температуры 1",
-                                "alert": "1",
-                                "number": "1"
-                            }, {
                                 "condition": "OR",
                                 "rules": [{
-                                    "rules": [{
-                                        "rules": [{
-                                            "operator": "==",
-                                            "value": "0",
-                                            "out": "value",
-                                            "id": "11",
-                                            "type": "string",
-                                            "field": "давление9",
-                                            "subalert": "rtn-subalert",
-                                            "description": "датчик давления 9",
-                                            "alert": "1",
-                                            "number": "1"
-                                        }, {
-                                            "operator": "==",
-                                            "value": "1",
-                                            "out": "value",
-                                            "id": "12",
-                                            "type": "string",
-                                            "field": "давление10",
-                                            "subalert": "rtn-subalert",
-                                            "description": "датчик давления 10",
-                                            "alert": "1",
-                                            "number": "1"
-                                        }],
-                                        "condition": "AND"
-                                    }, {
-                                        "rules": [{
-                                            "value": "300",
-                                            "operator": "<",
-                                            "out": "value",
-                                            "id": "13",
-                                            "field": "температура2",
-                                            "type": "string",
-                                            "subalert": "rtn-subalert",
-                                            "description": "датчик температуры 2",
-                                            "alert": "2",
-                                            "number": "1"
-                                        }, {
-                                            "operator": "<",
-                                            "value": "300",
-                                            "out": "value",
-                                            "id": "14",
-                                            "field": "температура3",
-                                            "type": "string",
-                                            "subalert": "rtn-subalert",
-                                            "description": "датчик температуры 3",
-                                            "alert": "2",
-                                            "number": "0"
-                                        }],
-                                        "condition": "AND"
-                                    }, {
-                                        "type": "string",
-                                        "field": "давление11",
-                                        "id": "15",
-                                        "subalert": "rtn-subalert",
-                                        "operator": "<",
-                                        "value": "120",
-                                        "out": "value",
-                                        "description": "датчик давления 11",
-                                        "alert": "2",
-                                        "number": "0"
-                                    }],
-                                    "condition": "OR"
+                                    "subalert": "rtn-subalert",
+                                    "field": "температура1",
+                                    "type": "string",
+                                    "id": "10",
+                                    "out": "state",
+                                    "operator": "in",
+                                    "value": "[2, 3, 5]",
+                                    "description": "датчик температуры 1",
+                                    "alert": "1",
+                                    "number": "1"
                                 }, {
                                     "condition": "OR",
                                     "rules": [{
-                                        "field": "температура4",
-                                        "type": "string",
-                                        "id": "16",
-                                        "subalert": "rtn-subalert",
-                                        "operator": ">",
-                                        "value": "87",
-                                        "out": "value",
-                                        "description": "датчик температуры 4",
-                                        "alert": "2",
-                                        "number": "0"
+                                        "rules": [{
+                                            "rules": [{
+                                                "operator": "==",
+                                                "value": "0",
+                                                "out": "value",
+                                                "id": "11",
+                                                "type": "string",
+                                                "field": "давление9",
+                                                "subalert": "rtn-subalert",
+                                                "description": "датчик давления 9",
+                                                "alert": "1",
+                                                "number": "1"
+                                            }, {
+                                                "operator": "==",
+                                                "value": "1",
+                                                "out": "value",
+                                                "id": "12",
+                                                "type": "string",
+                                                "field": "давление10",
+                                                "subalert": "rtn-subalert",
+                                                "description": "датчик давления 10",
+                                                "alert": "1",
+                                                "number": "1"
+                                            }],
+                                            "condition": "AND"
+                                        }, {
+                                            "rules": [{
+                                                "value": "300",
+                                                "operator": "<",
+                                                "out": "value",
+                                                "id": "13",
+                                                "field": "температура2",
+                                                "type": "string",
+                                                "subalert": "rtn-subalert",
+                                                "description": "датчик температуры 2",
+                                                "alert": "2",
+                                                "number": "1"
+                                            }, {
+                                                "operator": "<",
+                                                "value": "300",
+                                                "out": "value",
+                                                "id": "14",
+                                                "field": "температура3",
+                                                "type": "string",
+                                                "subalert": "rtn-subalert",
+                                                "description": "датчик температуры 3",
+                                                "alert": "2",
+                                                "number": "0"
+                                            }],
+                                            "condition": "AND"
+                                        }, {
+                                            "type": "string",
+                                            "field": "давление11",
+                                            "id": "15",
+                                            "subalert": "rtn-subalert",
+                                            "operator": "<",
+                                            "value": "120",
+                                            "out": "value",
+                                            "description": "датчик давления 11",
+                                            "alert": "2",
+                                            "number": "0"
+                                        }],
+                                        "condition": "OR"
                                     }, {
-                                        "out": "value",
-                                        "operator": ">",
-                                        "value": "87",
-                                        "subalert": "rtn-subalert",
-                                        "type": "string",
-                                        "field": "температура5",
-                                        "id": "17",
-                                        "description": "датчик температуры 5",
-                                        "alert": "2",
-                                        "number": "0"
-        
-                                    }, {
-                                        "subalert": "rtn-subalert",
-                                        "id": "18",
-                                        "type": "string",
-                                        "field": "температура6",
-                                        "out": "value",
-                                        "value": "80",
-                                        "operator": ">",
-                                        "description": "датчик температуры 6",
-                                        "alert": "2",
-                                        "number": "1"
-                                    }, {
-                                        "out": "value",
-                                        "value": "8.5",
-                                        "operator": ">",
-                                        "subalert": "rtn-subalert",
-                                        "field": "давление7",
-                                        "type": "string",
-                                        "id": "19",
-                                        "description": "датчик давления 7",
-                                        "alert": "2",
-                                        "number": "0"
-                                    }, {
-                                        "out": "value",
-                                        "operator": ">",
-                                        "value": "8.5",
-                                        "subalert": "rtn-subalert",
-                                        "type": "string",
-                                        "field": "давление8",
-                                        "id": "20",
-                                        "description": "датчик давления 8",
-                                        "alert": "2",
-                                        "number": "1"
+                                        "condition": "OR",
+                                        "rules": [{
+                                            "field": "температура4",
+                                            "type": "string",
+                                            "id": "16",
+                                            "subalert": "rtn-subalert",
+                                            "operator": ">",
+                                            "value": "87",
+                                            "out": "value",
+                                            "description": "датчик температуры 4",
+                                            "alert": "2",
+                                            "number": "0"
+                                        }, {
+                                            "out": "value",
+                                            "operator": ">",
+                                            "value": "87",
+                                            "subalert": "rtn-subalert",
+                                            "type": "string",
+                                            "field": "температура5",
+                                            "id": "17",
+                                            "description": "датчик температуры 5",
+                                            "alert": "2",
+                                            "number": "0"
+            
+                                        }, {
+                                            "subalert": "rtn-subalert",
+                                            "id": "18",
+                                            "type": "string",
+                                            "field": "температура6",
+                                            "out": "value",
+                                            "value": "80",
+                                            "operator": ">",
+                                            "description": "датчик температуры 6",
+                                            "alert": "2",
+                                            "number": "1"
+                                        }, {
+                                            "out": "value",
+                                            "value": "8.5",
+                                            "operator": ">",
+                                            "subalert": "rtn-subalert",
+                                            "field": "давление7",
+                                            "type": "string",
+                                            "id": "19",
+                                            "description": "датчик давления 7",
+                                            "alert": "2",
+                                            "number": "0"
+                                        }, {
+                                            "out": "value",
+                                            "operator": ">",
+                                            "value": "8.5",
+                                            "subalert": "rtn-subalert",
+                                            "type": "string",
+                                            "field": "давление8",
+                                            "id": "20",
+                                            "description": "датчик давления 8",
+                                            "alert": "2",
+                                            "number": "1"
 
+                                        }]
                                     }]
                                 }]
+                            }],
+                            "condition": "NOT"
                             }]
-                        }],
-                        "condition": "NOT"
                     }]
                 }],
                 "condition": "ANY",

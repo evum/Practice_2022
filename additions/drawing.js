@@ -21,7 +21,11 @@ const y = {
 // eslint-disable-next-line no-undef
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
-  .nodeSize([85, 79]);
+  .nodeSize([85, 79]);/* (d) => {
+    Console.log('ya', d);
+    if (d.data.comment === undefined) return [85, 79];
+    return [100, 100];
+  }); */
 
 // eslint-disable-next-line no-undef
 const svg = d3.select('body')
@@ -145,6 +149,7 @@ function nodeAdditions(node) {
   /* Отрисовка узлов логических операторов */
   node.append('path')
     .attr('d', geometry.distribut)
+    .attr('fill', (d) => { if (d.children === null) return 'LightGray'; return 'white'; })
     .attr('class', (d) => {
       if (d.data.condition && Number(d.data.count) === 1) { return 'nodePath on'; }
       if (d.data.condition) { return 'nodePath off'; }
@@ -165,12 +170,20 @@ function nodeAdditions(node) {
     .attr('class', 'condText');
   node.append('text')
     .text((d) => {
-      if (d.data.condition === 'ANY') return `(${d.data.value})`;
+      if (d.data.condition === 'ANY') {
+        let counterTrue = 0;
+        let counter = 0;
+        d.data.rules.forEach((item) => {
+          if (item.count === 1) counterTrue += 1;
+          counter += 1;
+        });
+        return `(${counterTrue} из ${counter})`;
+      }
       return '';
     })
     .attr('class', 'anyValue')
     .attr('y', 20)
-    .attr('x', -7);
+    .attr('x', -19);
   /* Контейнеры для всех узлов, кроме логических  */
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
@@ -178,6 +191,14 @@ function nodeAdditions(node) {
       if (d.data.result) { return 'result'; }
       if (d.data.comment) { return 'com'; }
       return '';
+    })
+    .attr('width', (d) => {
+      if (d.data.comment && d.parent.children !== null && d.parent.children.length > 1) return '84px';
+      return '150px';
+    })
+    .attr('x', (d) => {
+      if (d.data.comment && d.parent.children !== null && d.parent.children.length > 1) return '-42px';
+      return '-75px';
     })
     .attr('style', (d) => `border:${coloring.border(d)}; background-color:${coloring.background(d)}; color:${coloring.text(d)}`);
   /* Отрисовка текста + div для всех узлов, кроме логических */
@@ -229,13 +250,6 @@ function nodeAdditions(node) {
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('class', 'circle');
-  node.append('path')
-    .attr('d', (d) => {
-      if (d.children === null && d.data.condition === 'OR') return `M${0},${20}L${0},${30}M${-5},${25}L${5},${25}`;
-      if (d.children === null) return `M${0},${35}L${0},${45}M${-5},${40}L${5},${40}`;
-      return '';
-    })
-    .attr('class', 'collapseFlag');
 }
 
 function settings() {
@@ -267,9 +281,7 @@ function treeBuilding(source) {
     .attr('stroke-opacity', 0)
     .on('click', (d) => {
       const curD = d;
-      document.querySelectorAll('.collapseFlag').forEach((elem) => {
-        elem.parentNode.removeChild(elem);
-      });
+      if (curD.data.comment || curD.data.result) return;
       curD.children = d.children ? null : curD.tempChildren;
       nodeAdditions(nodeEnter);
       treeBuilding(curD);

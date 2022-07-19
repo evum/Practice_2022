@@ -6,8 +6,8 @@ export default function tooltipText(d) {
       Описание: ${d.data.description} <br>
       Оператор: ${d.data.operator} <br>
       Контроль: ${d.data.value} <br>
-      Результат: ${d.data.count} <br>
       Значение: ${d.data.number} <br>
+      Результат: ${d.data.count} <br>
       Тип значения: ${d.data.out}`;
   }
   if (d.data.result || d.data.comment) {
