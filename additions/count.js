@@ -1,4 +1,3 @@
-const numbers = [1, 1, 2, 3, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1];
 function logOperations(value, operator, control = 0) {
   let flag;
   let counter;
@@ -63,5 +62,5 @@ function counting(node) {
 }
 
 export default {
-  numbers, logOperations, counting,
+  logOperations, counting,
 };

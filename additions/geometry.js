@@ -14,15 +14,11 @@ function any() {
   return `M${-35},${10}C${-35},${30},${35},${30},${35},${10}C${35},${-8},${-35},${-8},${-35},${10}`;
 }
 
-function collapsedFlagDraw(d) {
+function collapseFlagDraw(d) {
   if (d.children === null && d.data.condition === 'OR') return `M${0},${20}L${0},${30}M${-5},${25}L${5},${25}`;
   if (d.children === null) return `M${0},${35}L${0},${45}M${-5},${40}L${5},${40}`;
-  return '';
-}
-
-function unCollapsedFlag(d) {
-  if (d.children !== null && d.data.condition === 'OR') return `M${-5},${-7}L${5},${-7}`;
-  if (d.children !== null && d.data.condition) return `M${-5},${20}L${5},${20}`;
+  /* if (d.children !== null && d.data.condition === 'OR') return `M${-5},${-7}L${5},${-7}`;
+  if (d.children !== null && d.data.condition) return `M${-5},${20}L${5},${20}`; */
   return '';
 }
 
@@ -35,5 +31,5 @@ function distribut(d) {
 }
 
 export default {
-  distribut, and, or, not, any, collapsedFlagDraw, unCollapsedFlag,
+  distribut, and, or, not, any, collapseFlagDraw,
 };

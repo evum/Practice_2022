@@ -95,8 +95,7 @@
 .condText {
 	position: relative;
 	font-size: 12px;
-	x: -50px;
-	y: -10;
+	font-weight: bold;
 }
 .additionDatText {
 	position: static;
@@ -229,4 +228,11 @@ Div::-webkit-scrollbar {
 
 .anyValue {
 	font-size: 12px;
+}
+
+.collapseFlag {
+	stroke-width: 3px;
+	fill: black;
+	stroke: black;
+	font-size: 24;
 }
