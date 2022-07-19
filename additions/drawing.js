@@ -21,11 +21,7 @@ const y = {
 // eslint-disable-next-line no-undef
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
-  .nodeSize([85, 79]);/* (d) => {
-    Console.log('ya', d);
-    if (d.data.comment === undefined) return [85, 79];
-    return [100, 100];
-  }); */
+  .nodeSize([85, 79]);
 
 // eslint-disable-next-line no-undef
 const svg = d3.select('body')
@@ -93,9 +89,9 @@ const coloring = {
     if (d.data.field) {
       switch (d.data.alert) {
         case '0':
-          return '1px solid blue';
+          return '1px solid LightSkyBlue';
         case '1':
-          return '1px solid green';
+          return '1px solid LightGreen';
         case '2':
           return '1px solid yellow';
         case '3':
@@ -140,7 +136,7 @@ const coloring = {
     return '';
   },
   text: (d) => {
-    if (d.data.alert === '6' || d.data.alert === '4') return 'LightGrey';
+    if (d.data.alert === '6' || d.data.alert === '4' || d.data.alert === '3') return 'LightGrey';
     return 'black';
   },
 };
@@ -149,7 +145,7 @@ function nodeAdditions(node) {
   /* Отрисовка узлов логических операторов */
   node.append('path')
     .attr('d', geometry.distribut)
-    .attr('fill', (d) => { if (d.children === null) return 'LightGray'; return 'white'; })
+    .attr('fill', 'white')
     .attr('class', (d) => {
       if (d.data.condition && Number(d.data.count) === 1) { return 'nodePath on'; }
       if (d.data.condition) { return 'nodePath off'; }
@@ -162,7 +158,7 @@ function nodeAdditions(node) {
       if (d.data.condition) { return d.data.condition; }
       return '';
     })
-    .attr('x', (d) => { if (d.data.condition === 'OR') { return -8; } return -13; })
+    .attr('x', (d) => { if (d.data.condition === 'OR') { return -9; } return -13; })
     .attr('y', (d) => {
       if (d.data.condition === 'OR' || d.data.condition === 'ANY') return 10;
       return 13;
@@ -184,6 +180,7 @@ function nodeAdditions(node) {
     .attr('class', 'anyValue')
     .attr('y', 20)
     .attr('x', -19);
+
   /* Контейнеры для всех узлов, кроме логических  */
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
@@ -201,6 +198,7 @@ function nodeAdditions(node) {
       return '-75px';
     })
     .attr('style', (d) => `border:${coloring.border(d)}; background-color:${coloring.background(d)}; color:${coloring.text(d)}`);
+
   /* Отрисовка текста + div для всех узлов, кроме логических */
   const divs = foreignObject.append('xhtml:div')
     .attr('class', (d) => {
@@ -224,9 +222,10 @@ function nodeAdditions(node) {
       if (d.data.field) { return 'datText'; }
       if (d.data.result) { return 'resultText'; }
       if (d.data.comment) { return 'comText'; }
-      return 'condText';
+      return '';
     });
-  /* Отрисовка дополниельной секции текста на начальных узлах и датчиков */
+
+  /* Отрисовка дополниельной секции текста на начальных узлах и датчиках */
   foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
@@ -243,6 +242,7 @@ function nodeAdditions(node) {
       if (d.data.result) { return 'additionResText'; }
       return '';
     });
+
   /* Общий круг узла */
   node.append('circle')
     .attr('r', (d) => { if (d.data.field) { return 5; } return 0; })
@@ -283,8 +283,7 @@ function treeBuilding(source) {
       const curD = d;
       if (curD.data.comment || curD.data.result) return;
       curD.children = d.children ? null : curD.tempChildren;
-      nodeAdditions(nodeEnter);
-      treeBuilding(curD);
+      treeBuilding(curD.parent);
     });
 
   nodeAdditions(nodeEnter);
