@@ -42,10 +42,7 @@ const transition = svg.transition().duration(duration);
 d3.json('settings/alertSettings.json', (err, json) => {
   if (err) throw err;
   alertSettings = json;
-  Console.log(alertSettings.state_info);
 });
-Console.log(alertSettings);
-
 
 function bigHelperAdd(d) {
   // eslint-disable-next-line no-undef
@@ -212,15 +209,6 @@ function nodeAdditions(node) {
     .attr('id', (d) => { if (d.data.condition) return d.id; return -1; })
     .append('xhtml:div')
     .attr('class', (d) => { if (d.children === null) return 'plus'; return 'mines'; });
-  /* .append('text')
-    .attr('class', 'collapseFlag')
-    .text((d) => {
-      if (d.children === null) return '+';
-      if (d.data.condition) return '-';
-      return '';
-    })
-    .attr('x', 0)
-    .attr('y', -12); */
 }
 
 function settings() {
@@ -255,7 +243,6 @@ function treeBuilding(source) {
   const links = globalNodes.links();
   tree(globalNodes);
   settings();
-  // nodeMove(globalNodes);
   const node = gNode.selectAll('g')
     .data(nodes, (d) => d.id);
   const nodeEnter = node.enter().append('g')
