@@ -6,12 +6,12 @@ function logOperations(value, operator, control = 0) {
   switch (operator) {
     case 'AND':
       flag = 1;
-      value.forEach((item) => { if (!item) flag = 0; });
+      value.forEach((item) => { if (item === 0) flag = 0; });
       return flag;
 
     case 'OR':
       flag = 0;
-      value.forEach((item) => { if (item) flag = 1; });
+      value.forEach((item) => { if (item === 1) flag = 1; });
       return flag;
     case 'NOT':
       if (numberValue === 1) return 0;

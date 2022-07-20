@@ -47,7 +47,7 @@
                             "id": "3",
                             "description": "датчик давления 3",
                             "alert": "3",
-                            "number": "2"
+                            "number": "5"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -61,7 +61,7 @@
                             "value": "[2, 3]",
                             "description": "датчик давления 4",
                             "alert": "0",
-                            "number": "3"
+                            "number": "1"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -75,7 +75,7 @@
                             "subalert": "rtn-subalert",
                             "description": "датчик давления 5",
                             "alert": "4",
-                            "number": "2"
+                            "number": "1"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -89,7 +89,7 @@
                         "value": "[2, 3]",
                         "description": "датчик давления 6",
                         "alert": "5",
-                        "number": "2"
+                        "number": "1"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",

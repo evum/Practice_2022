@@ -216,9 +216,11 @@ Div::-webkit-scrollbar {
 	text-align: center;
 	display: inline-block;
 	height: auto;
+	max-height: 100%;
 	background-color: white;
 	padding-bottom: 4px;
 	width: 100%;
+	overflow: auto;
 
 }
 
