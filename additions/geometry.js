@@ -1,9 +1,9 @@
 function or() {
-  return `M${-20},${20}Q${0},${10} ${20},${20}L${0},${-20}Z`;
+  return `M${-20},${10}Q${0},${-10} ${20},${10}L${0},${-40}Z`;
 }
 
 function and() {
-  return `M${-20},${30}L${20},${30},L${20},${0}Q${0},${-20},${-20},${0}Z`;
+  return `M${-20},${0}L${20},${0},L${20},${-30}Q${0},${-50},${-20},${-30}Z`;
 }
 
 function not() {
@@ -11,15 +11,7 @@ function not() {
 }
 
 function any() {
-  return `M${-35},${10}C${-35},${30},${35},${30},${35},${10}C${35},${-8},${-35},${-8},${-35},${10}`;
-}
-
-function collapseFlagDraw(d) {
-  if (d.children === null && d.data.condition === 'OR') return `M${0},${20}L${0},${30}M${-5},${25}L${5},${25}`;
-  if (d.children === null) return `M${0},${35}L${0},${45}M${-5},${40}L${5},${40}`;
-  /* if (d.children !== null && d.data.condition === 'OR') return `M${-5},${-7}L${5},${-7}`;
-  if (d.children !== null && d.data.condition) return `M${-5},${20}L${5},${20}`; */
-  return '';
+  return `M${-35},${-10}C${-35},${10},${35},${10},${35},${-10}C${35},${-28},${-35},${-28},${-35},${-10}`;
 }
 
 function distribut(d) {
@@ -31,5 +23,5 @@ function distribut(d) {
 }
 
 export default {
-  distribut, and, or, not, any, collapseFlagDraw,
+  distribut, and, or, not, any,
 };

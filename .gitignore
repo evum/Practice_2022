@@ -8,3 +8,5 @@
 additions/parse.js
 !additions/tooltip.js
 !additions/geometry.js
+!/settings
+!settings/alertSettings.json

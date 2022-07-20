@@ -1,0 +1,52 @@
+{
+    "state_info": {
+        "0": {
+            "color": "blue",
+            "iconCls16": "img_state_0_16",
+            "iconCls32": "img_state_0_32",
+            "textColor": "white"
+        },
+        "1": {
+            "color": "green",
+            "iconCls16": "img_state_1_16",
+            "iconCls32": "img_state_1_32",
+            "textColor": "black"
+        },
+        "2": {
+            "color": "#e5e502",
+            "iconCls16": "img_state_2_16",
+            "iconCls32": "img_state_2_32",
+            "textColor": "black"
+        },
+        "3": {
+            "color": "#d10404",
+            "iconCls16": "img_state_3_16",
+            "iconCls32": "img_state_3_32",
+            "textColor": "white"
+        },
+        "4": {
+            "color": "crimson",
+            "iconCls16": "img_state_4_16",
+            "iconCls32": "img_state_4_32",
+            "textColor": "white"
+        },
+        "5": {
+            "color": "gray",
+            "iconCls16": "img_state_5_16",
+            "iconCls32": "img_state_5_32",
+            "textColor": "black"
+        },
+        "6": {
+            "color": "black",
+            "iconCls16": "img_state_6_16",
+            "iconCls32": "img_state_6_32",
+            "textColor": "white"
+        },
+        "7": {
+            "color": "white",
+            "iconCls16": "img_state_7_16",
+            "iconCls32": "img_state_7_32",
+            "textColor": "black"
+        }
+    }
+}

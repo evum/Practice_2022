@@ -6,8 +6,9 @@ import tooltipText from './tooltip.js';
 import geometry from './geometry.js';
 
 const Console = console;
-const duration = 5;
 
+const duration = 5;
+let alertSettings;
 const jsonFile = 'data/cond.json';
 let globalNodes;
 const x = {
@@ -36,6 +37,15 @@ const gNode = svg.append('g')
 // eslint-disable-next-line no-undef
 const diagonal = d3.linkVertical().x((d) => d.x).y((d) => d.y);
 const transition = svg.transition().duration(duration);
+
+// eslint-disable-next-line no-undef
+d3.json('settings/alertSettings.json', (err, json) => {
+  if (err) throw err;
+  alertSettings = json;
+  Console.log(alertSettings.state_info);
+});
+Console.log(alertSettings);
+
 
 function bigHelperAdd(d) {
   // eslint-disable-next-line no-undef
@@ -67,95 +77,16 @@ function helpDisplay(d) {
   }
 }
 
-function nodeMove(node) {
-  const curNode = node;
-  if (curNode.children !== undefined && curNode.children !== null) {
-    curNode.children.forEach((item) => {
-      nodeMove(item);
-    });
-  }
-  if (curNode.data.field) {
-    curNode.parent.children.forEach((child) => {
-      if (child.data.condition) {
-        curNode.x -= 10;
-        curNode.y -= 20;
-      }
-    });
-  }
-}
-
-const coloring = {
-  border: (d) => {
-    if (d.data.field) {
-      switch (d.data.alert) {
-        case '0':
-          return '1px solid LightSkyBlue';
-        case '1':
-          return '1px solid LightGreen';
-        case '2':
-          return '1px solid yellow';
-        case '3':
-          return '1px solid red';
-        case '4':
-          return '1px solid darkRed';
-        case '5':
-          return '1px solid Gainsboro';
-        case '6':
-          return '1px solid black';
-        case '7':
-          return '1px solid LightGray';
-        default:
-          return '1px solid white';
-      }
-    }
-    return '';
-  },
-  background: (d) => {
-    if (d.data.field) {
-      switch (d.data.alert) {
-        case '0':
-          return 'LightSkyBlue';
-        case '1':
-          return 'LightGreen';
-        case '2':
-          return 'Gold';
-        case '3':
-          return 'red';
-        case '4':
-          return 'DarkRed';
-        case '5':
-          return 'DarkGray';
-        case '6':
-          return 'black';
-        case '7':
-          return 'white';
-        default:
-          return 'white';
-      }
-    }
-    return '';
-  },
-  text: (d) => {
-    if (d.data.alert === '6' || d.data.alert === '4' || d.data.alert === '3') return 'LightGrey';
-    return 'black';
-  },
-};
-
 const collapse = {
   x: (d) => {
-    if (d.children === null) return -3;
-    if (d.children !== null && (d.data.condition === 'AND' || d.data.condition === 'NOT')) return -45;
-    if (d.children !== null && d.data.condition === 'OR') return -40;
-    if (d.children !== null && d.data.condition === 'ANY') return -60;
+    if (d.data.condition) return -5;
     return 0;
   },
   y: (d) => {
-    if (d.children === null && d.data.condition === 'AND') return 45;
-    if (d.children === null && d.data.condition === 'OR') return 30;
-    if (d.children === null && (d.data.condition === 'NOT' || d.data.condition === 'ANY')) return 40;
-    if (d.children !== null
-      && (d.data.condition === 'AND' || d.data.condition === 'ANY' || d.data.condition === 'NOT')) return 15;
-    if (d.children !== null && d.data.condition === 'OR') return 10;
+    if (d.data.condition === 'AND') return -5;
+    if (d.data.condition === 'OR') return -4;
+    if (d.data.condition === 'NOT') return 20;
+    if (d.data.condition === 'ANY') return 1;
     return 0;
   },
 };
@@ -179,8 +110,10 @@ function nodeAdditions(node) {
     })
     .attr('x', (d) => { if (d.data.condition === 'OR') { return -9; } return -13; })
     .attr('y', (d) => {
-      if (d.data.condition === 'OR' || d.data.condition === 'ANY') return 10;
-      return 13;
+      if (d.data.condition === 'OR') return -5;
+      if (d.data.condition === 'ANY') return -10;
+      if (d.data.condition === 'NOT') return 15;
+      return -13;
     })
     .attr('class', 'condText');
   node.append('text')
@@ -197,7 +130,6 @@ function nodeAdditions(node) {
       return '';
     })
     .attr('class', 'anyValue')
-    .attr('y', 20)
     .attr('x', -19);
 
   /* Контейнеры для всех узлов, кроме логических  */
@@ -216,7 +148,12 @@ function nodeAdditions(node) {
       if (d.data.comment && d.parent.children !== null && d.parent.children.length > 1) return '-42px';
       return '-75px';
     })
-    .attr('style', (d) => `border:${coloring.border(d)}; background-color:${coloring.background(d)}; color:${coloring.text(d)}`);
+    .attr('style', (d) => {
+      if (d.data.field) {
+        return `border:${alertSettings.state_info[d.data.alert].color}; background-color:${alertSettings.state_info[d.data.alert].color}; color:${alertSettings.state_info[d.data.alert].textColor}`;
+      }
+      return '';
+    });
 
   /* Отрисовка текста + div для всех узлов, кроме логических */
   const divs = foreignObject.append('xhtml:div')
@@ -268,16 +205,22 @@ function nodeAdditions(node) {
     .attr('class', 'circle');
 
   /* Проход по всем развёрнутым узлам */
-  node.append('text')
+  node.append('foreignObject')
+    .attr('class', (d) => { if (d.data.condition) return 'col'; return ''; })
+    .attr('x', collapse.x)
+    .attr('y', collapse.y)
+    .attr('id', (d) => { if (d.data.condition) return d.id; return -1; })
+    .append('xhtml:div')
+    .attr('class', (d) => { if (d.children === null) return 'plus'; return 'mines'; });
+  /* .append('text')
     .attr('class', 'collapseFlag')
     .text((d) => {
       if (d.children === null) return '+';
-      if (d.data.condition) return '---';
+      if (d.data.condition) return '-';
       return '';
     })
-    .attr('id', (d) => { if (d.data.condition) return d.id; return -1; })
-    .attr('x', collapse.x)
-    .attr('y', collapse.y);
+    .attr('x', 0)
+    .attr('y', -12); */
 }
 
 function settings() {
@@ -295,19 +238,16 @@ function settings() {
 }
 
 function collapseAdd(node, id) {
-  node.append('text')
-    .attr('class', 'collapseFlag')
+  node.append('foreignObject')
+    .attr('class', (d) => { if (d.data.condition) return 'col'; return ''; })
+    .attr('x', collapse.x)
+    .attr('y', collapse.y)
     .attr('id', (d) => {
       if (d.id !== id) return -1;
       return id;
     })
-    .text((d) => {
-      if (d.children === null) return '+';
-      if (d.data.condition) return '---';
-      return '';
-    })
-    .attr('x', collapse.x)
-    .attr('y', collapse.y);
+    .append('xhtml:div')
+    .attr('class', (d) => { if (d.children === null) return 'plus'; return 'mines'; });
 }
 
 function treeBuilding(source) {
@@ -315,7 +255,7 @@ function treeBuilding(source) {
   const links = globalNodes.links();
   tree(globalNodes);
   settings();
-  nodeMove(globalNodes);
+  // nodeMove(globalNodes);
   const node = gNode.selectAll('g')
     .data(nodes, (d) => d.id);
   const nodeEnter = node.enter().append('g')
