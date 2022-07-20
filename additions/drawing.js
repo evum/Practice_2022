@@ -250,6 +250,18 @@ function nodeAdditions(node) {
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('class', 'circle');
+  /* Проход по всем развёрнутым узлам */
+  node.append('text')
+    .attr('class', 'collapseFlag')
+    .text((d) => {
+      if (d.children === null) return '+';
+      if (d.data.condition) return '-';
+      return '';
+    })
+    // .attr('id', (d) => { if (document.getElementById(`${d.id}`)) document.getElementById(`${d.id}`).remove(); return d.id; })
+    .attr('id', (d) => { Console.log('add', d.id); return d.id; })
+    .attr('x', (d) => { if (d.children === null) return 0; return -30; })
+    .attr('y', (d) => { if (d.children === null) return 30; return 0; });
 }
 
 function settings() {
@@ -264,6 +276,19 @@ function settings() {
   svg.attr('height', height);
   gNode.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
   gLink.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
+}
+
+function collapseAdd(node, id) {
+  node.append('text')
+    .attr('class', 'collapseFlag')
+    .attr('id', (d) => { if (d.id !== id) return -1; return id; })
+    .text((d) => {
+      if (d.children === null) return '+';
+      if (d.data.condition) return '-';
+      return '';
+    })
+    .attr('x', (d) => { if (d.children === null) return 0; return -30; })
+    .attr('y', (d) => { if (d.children === null) return 30; return 0; });
 }
 
 function treeBuilding(source) {
@@ -282,8 +307,41 @@ function treeBuilding(source) {
     .on('click', (d) => {
       const curD = d;
       if (curD.data.comment || curD.data.result) return;
+      /* if (curD.tempChildren !== null) {
+        curD.tempChildren.forEach((child) => {
+          try {
+            while (true) {
+              const elem = document.getElementById(`${child.id}`);
+              elem.remove();
+            }
+          } catch (err) {
+          }
+        });
+      } */
       curD.children = d.children ? null : curD.tempChildren;
-      treeBuilding(curD.parent);
+
+      /* try {
+        while (true) {
+          const elem = document.getElementById(`${d.id}`);
+          elem.remove();
+          Console.log('del', d.id);
+        }
+      } catch (err) {
+      } */
+      const element = document.getElementById(`${curD.id}`);
+      element.parentNode.removeChild(element);
+      Console.log('del', d.id, element);
+
+      collapseAdd(nodeEnter, curD.id);
+      try {
+        while (true) {
+          const elem = document.getElementById('-1');
+          elem.remove();
+          Console.log('del', d.id);
+        }
+      } catch (err) {
+      }
+      treeBuilding(curD);
     });
 
   nodeAdditions(nodeEnter);
