@@ -42,7 +42,7 @@ function bigHelperAdd(d) {
   d3.select('body')
     .append('foreignObject')
     .attr('class', 'bigHelper')
-    .attr('id', d.data.id)
+    .attr('id', d.id)
     .append('xhtml:body')
     .attr('class', 'bigHelperBody')
     .html(`Название: ${d.data.field} <br>
@@ -55,8 +55,8 @@ function bigHelperAdd(d) {
 }
 
 function helpDisplay(d) {
-  if (document.getElementById(d.data.id) !== null) {
-    document.getElementById(d.data.id).remove();
+  if (document.getElementById(d.id) !== null) {
+    document.getElementById(d.id).remove();
   } else if (document.querySelectorAll('.bigHelper') !== null) {
     document.querySelectorAll('.bigHelper').forEach((elem) => {
       elem.parentNode.removeChild(elem);
@@ -141,6 +141,25 @@ const coloring = {
   },
 };
 
+const collapse = {
+  x: (d) => {
+    if (d.children === null) return -3;
+    if (d.children !== null && (d.data.condition === 'AND' || d.data.condition === 'NOT')) return -45;
+    if (d.children !== null && d.data.condition === 'OR') return -40;
+    if (d.children !== null && d.data.condition === 'ANY') return -60;
+    return 0;
+  },
+  y: (d) => {
+    if (d.children === null && d.data.condition === 'AND') return 45;
+    if (d.children === null && d.data.condition === 'OR') return 30;
+    if (d.children === null && (d.data.condition === 'NOT' || d.data.condition === 'ANY')) return 40;
+    if (d.children !== null
+      && (d.data.condition === 'AND' || d.data.condition === 'ANY' || d.data.condition === 'NOT')) return 15;
+    if (d.children !== null && d.data.condition === 'OR') return 10;
+    return 0;
+  },
+};
+
 function nodeAdditions(node) {
   /* Отрисовка узлов логических операторов */
   node.append('path')
@@ -207,10 +226,8 @@ function nodeAdditions(node) {
       if (d.data.comment) { return 'comDiv'; }
       return 'condDiv';
     })
-    .attr('data-tooltip', tooltipText)
-    .on('click', (d) => { if (d.data.field) return helpDisplay; return ''; });
+    .attr('data-tooltip', tooltipText);
   divs.append('text')
-    .on('click', (d) => { if (d.data.field) helpDisplay(d); })
     .attr('data-tooltip', tooltipText)
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
@@ -229,7 +246,6 @@ function nodeAdditions(node) {
   foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
-    .on('click', (d) => { if (d.data.field) helpDisplay(d); })
     .append('text')
     .attr('data-tooltip', tooltipText)
     .text((d) => {
@@ -250,18 +266,18 @@ function nodeAdditions(node) {
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('class', 'circle');
+
   /* Проход по всем развёрнутым узлам */
   node.append('text')
     .attr('class', 'collapseFlag')
     .text((d) => {
       if (d.children === null) return '+';
-      if (d.data.condition) return '-';
+      if (d.data.condition) return '---';
       return '';
     })
-    // .attr('id', (d) => { if (document.getElementById(`${d.id}`)) document.getElementById(`${d.id}`).remove(); return d.id; })
-    .attr('id', (d) => { Console.log('add', d.id); return d.id; })
-    .attr('x', (d) => { if (d.children === null) return 0; return -30; })
-    .attr('y', (d) => { if (d.children === null) return 30; return 0; });
+    .attr('id', (d) => { if (d.data.condition) return d.id; return -1; })
+    .attr('x', collapse.x)
+    .attr('y', collapse.y);
 }
 
 function settings() {
@@ -281,14 +297,17 @@ function settings() {
 function collapseAdd(node, id) {
   node.append('text')
     .attr('class', 'collapseFlag')
-    .attr('id', (d) => { if (d.id !== id) return -1; return id; })
+    .attr('id', (d) => {
+      if (d.id !== id) return -1;
+      return id;
+    })
     .text((d) => {
       if (d.children === null) return '+';
-      if (d.data.condition) return '-';
+      if (d.data.condition) return '---';
       return '';
     })
-    .attr('x', (d) => { if (d.children === null) return 0; return -30; })
-    .attr('y', (d) => { if (d.children === null) return 30; return 0; });
+    .attr('x', collapse.x)
+    .attr('y', collapse.y);
 }
 
 function treeBuilding(source) {
@@ -306,40 +325,27 @@ function treeBuilding(source) {
     .attr('stroke-opacity', 0)
     .on('click', (d) => {
       const curD = d;
-      if (curD.data.comment || curD.data.result) return;
-      /* if (curD.tempChildren !== null) {
-        curD.tempChildren.forEach((child) => {
-          try {
-            while (true) {
-              const elem = document.getElementById(`${child.id}`);
-              elem.remove();
-            }
-          } catch (err) {
-          }
-        });
-      } */
+      if (curD.data.field) {
+        helpDisplay(d);
+      }
+      if (curD.data.comment || curD.data.result || curD.data.field) {
+        return;
+      }
       curD.children = d.children ? null : curD.tempChildren;
 
-      /* try {
-        while (true) {
-          const elem = document.getElementById(`${d.id}`);
-          elem.remove();
-          Console.log('del', d.id);
-        }
-      } catch (err) {
-      } */
       const element = document.getElementById(`${curD.id}`);
       element.parentNode.removeChild(element);
-      Console.log('del', d.id, element);
 
       collapseAdd(nodeEnter, curD.id);
-      try {
-        while (true) {
-          const elem = document.getElementById('-1');
-          elem.remove();
-          Console.log('del', d.id);
+
+      let notEnough = true;
+      while (notEnough) {
+        const elem = document.getElementById('-1');
+        if (elem === null) {
+          notEnough = false;
+          break;
         }
-      } catch (err) {
+        elem.remove();
       }
       treeBuilding(curD);
     });

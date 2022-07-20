@@ -195,6 +195,7 @@ Div::-webkit-scrollbar {
 
 .levelDiv {
 	position: absolute;
+	padding-top: 2px;
 	top: 70%;
 	height: 30%;
 	width: 100%;
