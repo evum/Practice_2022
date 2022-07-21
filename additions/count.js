@@ -1,4 +1,8 @@
 /**
+ * File for counting results of logic operations
+ */
+
+/**
  * Function to count result of logic operations
  * @param {*} value - number to commpare
  * @param {*} operator - logic operator

@@ -11,3 +11,4 @@ additions/parse.js
 !/settings
 !settings/alertSettings.json
 !.eslintrc.js
+!README.md

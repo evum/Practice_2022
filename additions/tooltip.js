@@ -1,3 +1,7 @@
+/**
+ * File adding dynamic tooltip
+ */
+
 let tooltipElem;
 
 /**

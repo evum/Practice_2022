@@ -1,4 +1,8 @@
 /**
+ * File for drawing pictograms of logic nodes
+ */
+
+/**
  * Function to generate "or" path
  * @returns path
  */

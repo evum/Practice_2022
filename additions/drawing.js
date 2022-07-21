@@ -1,3 +1,8 @@
+/**
+ * Main program file.
+ * Draw tree, add tooltips.
+ */
+
 import count from './count.js';
 import tooltipText from './tooltip.js';
 import geometry from './geometry.js';
@@ -369,7 +374,9 @@ function draw() {
     globalNodes.descendants().forEach((d, i) => {
       const curD = d;
       curD.id = i;
-      curD.tempChildren = curD.children;
+      if (curD.children !== undefined) {
+        curD.tempChildren = Object.assign(curD.children);
+      }
     });
     treeBuilding(nodes);
   });
