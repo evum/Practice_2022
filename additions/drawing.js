@@ -226,7 +226,7 @@ function nodeAdditions(node) {
     .attr('y', collapse.y)
     .attr('id', (d) => { if (d.data.condition) return d.id; return -1; })
     .append('xhtml:div')
-    .attr('class', (d) => { if (d.children === null) return 'plus'; return 'mines'; });
+    .attr('class', (d) => { if (d.children === null) return 'plus'; return 'minus'; });
 }
 
 function settings() {
