@@ -239,9 +239,10 @@ function collapseAdd(node, id) {
     .attr('class', (d) => { if (d.data.condition) return 'col'; return ''; })
     .attr('x', collapse.x)
     .attr('y', collapse.y)
-    .attr('id', (d) => {
-      if (d.id !== id) return -1;
-      return id;
+    .attr('id', id)
+    .attr('name', (d) => {
+      if (d.id !== id) return 'bad';
+      return 'good';
     })
     .append('xhtml:div')
     .attr('class', (d) => { if (d.children === null) return 'plus'; return 'mines'; });
@@ -273,20 +274,21 @@ function treeBuilding(source) {
         curD.children = null;
       }
 
-      const element = document.getElementById(`${curD.id}`);
-      element.parentNode.removeChild(element);
+      const element = document.getElementById(curD.id);
+      if (element !== null) {
+        element.parentNode.removeChild(element);
+      }
 
       collapseAdd(nodeEnter, curD.id);
-
-      let notEnough = true;
-      while (notEnough) {
-        const elem = document.getElementById('-1');
-        if (elem === null) {
-          notEnough = false;
-          break;
-        }
-        elem.remove();
+      let elems = document.getElementsByName('bad');
+      while (elems.length !== 0) {
+        elems = document.getElementsByName('bad');
+        elems.forEach((elem) => {
+          Console.log(elem);
+          elem.remove();
+        });
       }
+
       treeBuilding(curD);
     });
 
