@@ -7,7 +7,7 @@ Div::-webkit-scrollbar {
 .svg {
 	overflow: auto;
 }
-/* Стиль для узла */
+/* Node style */
 .node {
 	position: relative;
 	border: solid 1px black;
@@ -28,13 +28,13 @@ Div::-webkit-scrollbar {
 .circle {
 	position: relative;
 }
-/* Стиль для линии */
+/* Line style */
 .link {
 	fill: none;
 	stroke: #ccc;
 	stroke-width: 1.5px;
   }
-/* Стиль для узла датчика */
+/* Style for sensor node */
 .dat {
 	border-radius: 10px;
 	width: 80px;
@@ -48,7 +48,7 @@ Div::-webkit-scrollbar {
 
 }
 
-/* Стиль для div'а датчика */
+/* Style for div in sensor node */
 .datDiv {
 	position: relative;
 	width: 100%;
@@ -64,14 +64,14 @@ Div::-webkit-scrollbar {
 
 }
 
-/* Стиль для текста датчика */
+/* Style for sensor text */
 .datText {
 	position: relative;
 	font-size: 14px;
 	font-weight: bold;
 }
 
-/* Стиль для узла условия */
+/* Style for condition node */
 .cond {
 	position: relative;
 	width: 35px;
@@ -87,7 +87,7 @@ Div::-webkit-scrollbar {
 
 }
 
-/* Стиль для div'а условия */
+/* СStyle for condition div */
 .condDiv {
 	background-color: white;
 	text-anchor: middle;
@@ -96,16 +96,16 @@ Div::-webkit-scrollbar {
 	height: 100%;
 }
 
-/* Дополнение для стиля неактивированного узла условия */
+/* Style for unactivated condition node */
 .off {
 	stroke: black;
 }
-/* Дополнение для стиля активированного узла условия */
+/* Style for activated condition node */
 .on {
 	stroke: red;
 }
 
-/* Стиль для текста условия */
+/* Style for condition text */
 .condText {
 	position: relative;
 	font-size: 12px;
