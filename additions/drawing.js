@@ -5,6 +5,7 @@ import tooltipText from './tooltip.js';
 // eslint-disable-next-line import/extensions
 import geometry from './geometry.js';
 
+const { d3 } = window;
 const Console = console;
 
 const duration = 5;
@@ -19,12 +20,10 @@ const y = {
   max: 0,
   min: 0,
 };
-// eslint-disable-next-line no-undef
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
   .nodeSize([85, 79]);
 
-// eslint-disable-next-line no-undef
 const svg = d3.select('body')
   .append('svg')
   .attr('class', 'svg');
@@ -34,18 +33,15 @@ const gLink = svg.append('g')
 
 const gNode = svg.append('g')
   .attr('class', 'node');
-// eslint-disable-next-line no-undef
 const diagonal = d3.linkVertical().x((d) => d.x).y((d) => d.y);
 const transition = svg.transition().duration(duration);
 
-// eslint-disable-next-line no-undef
 d3.json('settings/alertSettings.json', (err, json) => {
   if (err) throw err;
   alertSettings = json;
 });
 
 function bigHelperAdd(d) {
-  // eslint-disable-next-line no-undef
   d3.select('body')
     .append('foreignObject')
     .attr('class', 'bigHelper')
@@ -80,11 +76,18 @@ const collapse = {
     return 0;
   },
   y: (d) => {
-    if (d.data.condition === 'AND') return -5;
-    if (d.data.condition === 'OR') return -4;
-    if (d.data.condition === 'NOT') return 20;
-    if (d.data.condition === 'ANY') return 1;
-    return 0;
+    switch (d.data.condition) {
+      case 'AND':
+        return -5;
+      case 'OR':
+        return -4;
+      case 'NOT':
+        return 20;
+      case 'ANY':
+        return 1;
+      default:
+        return 0;
+    }
   },
 };
 
@@ -107,10 +110,16 @@ function nodeAdditions(node) {
     })
     .attr('x', (d) => { if (d.data.condition === 'OR') { return -9; } return -13; })
     .attr('y', (d) => {
-      if (d.data.condition === 'OR') return -5;
-      if (d.data.condition === 'ANY') return -10;
-      if (d.data.condition === 'NOT') return 15;
-      return -13;
+      switch (d.data.condition) {
+        case 'OR':
+          return -5;
+        case 'ANY':
+          return -10;
+        case 'NOT':
+          return 15;
+        default:
+          return -13;
+      }
     })
     .attr('class', 'condText');
   node.append('text')
@@ -258,7 +267,11 @@ function treeBuilding(source) {
       if (curD.data.comment || curD.data.result || curD.data.field) {
         return;
       }
-      curD.children = d.children ? null : curD.tempChildren;
+      if (curD.children === null) {
+        curD.children = curD.tempChildren;
+      } else {
+        curD.children = null;
+      }
 
       const element = document.getElementById(`${curD.id}`);
       element.parentNode.removeChild(element);
@@ -319,7 +332,9 @@ function treeBuilding(source) {
 function draw() {
   // eslint-disable-next-line no-undef
   d3.json(jsonFile, (err, json) => {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
     count.counting(json);
     // eslint-disable-next-line no-undef
     const nodes = d3.hierarchy(json, (d) => d.rules);
