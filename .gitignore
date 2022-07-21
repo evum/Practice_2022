@@ -10,3 +10,4 @@ additions/parse.js
 !additions/geometry.js
 !/settings
 !settings/alertSettings.json
+!.eslintrc.js

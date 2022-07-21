@@ -11,6 +11,14 @@
 	cursor: pointer;
 }
 
+.linkOn {
+	stroke:red;
+}
+
+.linkOff {
+	stroke:#ccc;
+}
+
 .circle {
 	position: relative;
 }
@@ -269,7 +277,7 @@ Div::-webkit-scrollbar {
 
 }
 
-.mines {
+.minus {
 	width: 100%;
 	height: 80%;
 	background:

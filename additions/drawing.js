@@ -1,8 +1,5 @@
-// eslint-disable-next-line import/extensions
 import count from './count.js';
-// eslint-disable-next-line import/extensions
 import tooltipText from './tooltip.js';
-// eslint-disable-next-line import/extensions
 import geometry from './geometry.js';
 
 const { d3 } = window;
@@ -41,6 +38,10 @@ d3.json('settings/alertSettings.json', (err, json) => {
   alertSettings = json;
 });
 
+/**
+ * Draw static help display
+ * @param {*} d - object, which data should be printed
+ */
 function bigHelperAdd(d) {
   d3.select('body')
     .append('foreignObject')
@@ -57,6 +58,10 @@ function bigHelperAdd(d) {
      Тип значения: ${d.data.out}`);
 }
 
+/**
+ * Manage static help display
+ * @param {*} d - object, which data should be printed
+ */
 function helpDisplay(d) {
   if (document.getElementById(d.id) !== null) {
     document.getElementById(d.id).remove();
@@ -70,6 +75,9 @@ function helpDisplay(d) {
   }
 }
 
+/**
+ * Object to define collapse flag position
+ */
 const collapse = {
   x: (d) => {
     if (d.data.condition) return -5;
@@ -156,7 +164,8 @@ function nodeAdditions(node) {
     })
     .attr('style', (d) => {
       if (d.data.field) {
-        return `border:${alertSettings.state_info[d.data.alert].color}; background-color:${alertSettings.state_info[d.data.alert].color}; color:${alertSettings.state_info[d.data.alert].textColor}`;
+        const alertSet = alertSettings.state_info[d.data.alert];
+        return `border:${alertSet.color}; background-color:${alertSet.color}; color:${alertSet.textColor}`;
       }
       return '';
     });
@@ -230,8 +239,8 @@ function settings() {
   const width = Math.abs(x.min) + x.max + 100;
   svg.attr('width', width);
   svg.attr('height', height);
-  gNode.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
-  gLink.attr('transform', `translate(${Math.abs(x.min) + 50},${60})`);
+  gNode.attr('transform', `translate(${Math.abs(x.min) + 50}, ${60})`);
+  gLink.attr('transform', `translate(${Math.abs(x.min) + 50}, ${60})`);
 }
 
 function collapseAdd(node, id) {
@@ -245,7 +254,7 @@ function collapseAdd(node, id) {
       return 'good';
     })
     .append('xhtml:div')
-    .attr('class', (d) => { if (d.children === null) return 'plus'; return 'mines'; });
+    .attr('class', (d) => { if (d.children === null) return 'plus'; return 'minus'; });
 }
 
 function treeBuilding(source) {
@@ -284,7 +293,6 @@ function treeBuilding(source) {
       while (elems.length !== 0) {
         elems = document.getElementsByName('bad');
         elems.forEach((elem) => {
-          Console.log(elem);
           elem.remove();
         });
       }
@@ -301,9 +309,9 @@ function treeBuilding(source) {
       const o = { x: source.x, y: source.y };
       return diagonal({ source: o, target: o });
     })
-    .attr('style', (d) => {
-      if (d.target.data.count === 1 || (d.target.data.comment && d.target.children[0].data.count === 1)) return 'stroke:red';
-      return 'stroke:#ccc';
+    .attr('class', (d) => {
+      if (d.target.data.count === 1 || (d.target.data.comment && d.target.children[0].data.count === 1)) return 'linkOn';
+      return 'linkOff';
     });
 
   node.merge(nodeEnter).transition(transition)
