@@ -1,5 +1,10 @@
 let tooltipElem;
 
+/**
+ * Function to generate tooltip text
+ * @param {*} d - object to tooltip add
+ * @returns string with tooltip text
+ */
 export default function tooltipText(d) {
   if (d.data.field) {
     return `Название: ${d.data.field} <br>

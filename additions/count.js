@@ -1,3 +1,10 @@
+/**
+ * Function to count result of logic operations
+ * @param {*} value - number to commpare
+ * @param {*} operator - logic operator
+ * @param {*} control  - control number
+ * @returns operation result
+ */
 function logOperations(value, operator, control = 0) {
   let flag;
   let counter;
@@ -41,6 +48,11 @@ function logOperations(value, operator, control = 0) {
   }
 }
 
+/**
+ * Manage logic operations
+ * @param {*} node - data to count
+ * @returns result of operation
+ */
 function counting(node) {
   const curNode = node;
   if (curNode.rules == null) {

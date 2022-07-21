@@ -99,8 +99,12 @@ const collapse = {
   },
 };
 
+/**
+ * Add to nodes usefull information
+ * @param {*} node - node, to which information added
+ */
 function nodeAdditions(node) {
-  /* Отрисовка узлов логических операторов */
+  /* Drawing logic operators nodes */
   node.append('path')
     .attr('d', geometry.distribut)
     .attr('fill', 'white')
@@ -110,7 +114,7 @@ function nodeAdditions(node) {
       return '';
     });
 
-  /* Текст на узлах логических операторов */
+  /* Text on the logic nodes */
   node.append('text')
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
@@ -146,7 +150,7 @@ function nodeAdditions(node) {
     .attr('class', 'anyValue')
     .attr('x', -19);
 
-  /* Контейнеры для всех узлов, кроме логических  */
+  /* Containers for all nodes, except logic  */
   const foreignObject = node.append('foreignObject')
     .attr('class', (d) => {
       if (d.data.field) { return 'dat'; }
@@ -170,7 +174,7 @@ function nodeAdditions(node) {
       return '';
     });
 
-  /* Отрисовка текста + div для всех узлов, кроме логических */
+  /* Drawing div containers for all nodes, except logic */
   const divs = foreignObject.append('xhtml:div')
     .attr('class', (d) => {
       if (d.data.field) { return 'datDiv'; }
@@ -194,7 +198,7 @@ function nodeAdditions(node) {
       return '';
     });
 
-  /* Отрисовка дополниельной секции текста на начальных узлах и датчиках */
+  /* Drawing additional section on sensors and results nodes */
   foreignObject.append('xhtml:div')
     .attr('data-tooltip', tooltipText)
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
@@ -211,7 +215,7 @@ function nodeAdditions(node) {
       return '';
     });
 
-  /* Общий круг узла */
+  /* Drawing node`s circle */
   node.append('circle')
     .attr('r', (d) => { if (d.data.field) { return 5; } return 0; })
     .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
@@ -219,7 +223,7 @@ function nodeAdditions(node) {
     .attr('stroke-width', 1)
     .attr('class', 'circle');
 
-  /* Проход по всем развёрнутым узлам */
+  /* Add collapse flag to all uncollapsed nodes */
   node.append('foreignObject')
     .attr('class', (d) => { if (d.data.condition) return 'col'; return ''; })
     .attr('x', collapse.x)
@@ -229,6 +233,9 @@ function nodeAdditions(node) {
     .attr('class', (d) => { if (d.children === null) return 'plus'; return 'minus'; });
 }
 
+/**
+ * Function to set up general settings
+ */
 function settings() {
   globalNodes.eachBefore((node) => {
     if (node.y > y.max) y.max = node.y;
@@ -243,6 +250,11 @@ function settings() {
   gLink.attr('transform', `translate(${Math.abs(x.min) + 50}, ${60})`);
 }
 
+/**
+ * Function to add collapse flag to collapsed/uncollapsed node
+ * @param {*} node - which node was collapsed
+ * @param {*} id - id of node
+ */
 function collapseAdd(node, id) {
   node.append('foreignObject')
     .attr('class', (d) => { if (d.data.condition) return 'col'; return ''; })
@@ -257,6 +269,10 @@ function collapseAdd(node, id) {
     .attr('class', (d) => { if (d.children === null) return 'plus'; return 'minus'; });
 }
 
+/**
+ * General function for tree building
+ * @param {*} source - data to draw tree
+ */
 function treeBuilding(source) {
   const nodes = globalNodes.descendants().reverse();
   const links = globalNodes.links();
@@ -339,14 +355,15 @@ function treeBuilding(source) {
   });
 }
 
+/**
+ * Function to start tree drawing
+ */
 function draw() {
-  // eslint-disable-next-line no-undef
   d3.json(jsonFile, (err, json) => {
     if (err) {
       throw err;
     }
     count.counting(json);
-    // eslint-disable-next-line no-undef
     const nodes = d3.hierarchy(json, (d) => d.rules);
     globalNodes = nodes;
     globalNodes.descendants().forEach((d, i) => {
