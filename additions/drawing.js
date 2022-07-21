@@ -1,5 +1,5 @@
 /**
- * Main program file.
+ * Program main file.
  * Draw tree, add tooltips.
  */
 
@@ -174,7 +174,9 @@ function nodeAdditions(node) {
     .attr('style', (d) => {
       if (d.data.field) {
         const alertSet = alertSettings.state_info[d.data.alert];
-        return `border:${alertSet.color}; background-color:${alertSet.color}; color:${alertSet.textColor}`;
+        return `border:${alertSet.color}; `
+          + `background-color:${alertSet.color}; `
+          + `color:${alertSet.textColor}`;
       }
       return '';
     });
