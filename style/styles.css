@@ -287,3 +287,14 @@ Div::-webkit-scrollbar {
 	background-size: 80% 1px;
 	background-repeat:no-repeat;
 }
+
+.zoom {
+	border: 1px solid black;
+	height: 32px;
+	border-radius: 5px;
+	background-color: lightgray;
+	position: fixed;
+	top: 1%;
+	right: 1%;
+	cursor: pointer;
+}

@@ -3,13 +3,16 @@
  */
 
 let tooltipElem;
-
+let tooltipScale = 1;
+function setScale(newScale) {
+  tooltipScale = newScale;
+}
 /**
  * Function to generate tooltip text
  * @param {*} d - object to tooltip add
  * @returns string with tooltip text
  */
-export default function tooltipText(d) {
+function tooltipText(d) {
   if (d.data.field) {
     return `Название: ${d.data.field} <br>
       Описание: ${d.data.description} <br>
@@ -35,6 +38,7 @@ document.onmouseover = (event) => {
   // ...создадим элемент для подсказки
   tooltipElem = document.createElement('div');
   tooltipElem.className = 'tooltip';
+  tooltipElem.style.zoom = tooltipScale;
   tooltipElem.innerHTML = tooltipHtml;
   document.body.append(tooltipElem);
 
@@ -57,4 +61,8 @@ document.onmouseout = () => {
     tooltipElem.remove();
     tooltipElem = null;
   }
+};
+
+export default {
+  setScale, tooltipText,
 };

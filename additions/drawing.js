@@ -4,16 +4,26 @@
  */
 
 import count from './count.js';
-import tooltipText from './tooltip.js';
+import tooltip from './tooltip.js';
 import geometry from './geometry.js';
 
 const { d3 } = window;
 const Console = console;
 
+let curScale = 1;
 const duration = 5;
 let alertSettings;
 const jsonFile = 'data/cond.json';
 let globalNodes;
+const screen = {
+  height: 700,
+  width: 1300,
+};
+
+const treeDimensions = {
+  width: 0,
+  height: 0,
+};
 const x = {
   max: 0,
   min: 0,
@@ -22,21 +32,19 @@ const y = {
   max: 0,
   min: 0,
 };
+
 const tree = d3.tree()
   .separation((a, b) => (a.parent === b.parent ? 1 : 1.25))
   .nodeSize([85, 79]);
-
 const svg = d3.select('body')
   .append('svg')
   .attr('class', 'svg');
-
 const gLink = svg.append('g')
   .attr('class', 'link');
-
 const gNode = svg.append('g')
   .attr('class', 'node');
-const diagonal = d3.linkVertical().x((d) => d.x).y((d) => d.y);
 const transition = svg.transition().duration(duration);
+const diagonal = d3.linkVertical().x((d) => d.x).y((d) => d.y);
 
 d3.json('settings/alertSettings.json', (err, json) => {
   if (err) throw err;
@@ -192,9 +200,9 @@ function nodeAdditions(node) {
       if (d.data.comment) { return 'comDiv'; }
       return 'condDiv';
     })
-    .attr('data-tooltip', tooltipText);
+    .attr('data-tooltip', tooltip.tooltipText);
   divs.append('text')
-    .attr('data-tooltip', tooltipText)
+    .attr('data-tooltip', tooltip.tooltipText)
     .text((d) => {
       if (d.data.condition) { return d.data.condition; }
       if (d.data.result) { return d.data.result; }
@@ -210,10 +218,10 @@ function nodeAdditions(node) {
 
   /* Drawing additional section on sensors and results nodes */
   foreignObject.append('xhtml:div')
-    .attr('data-tooltip', tooltipText)
+    .attr('data-tooltip', tooltip.tooltipText)
     .attr('class', (d) => { if (d.data.result) { return 'levelDiv'; } return 'descDiv'; })
     .append('text')
-    .attr('data-tooltip', tooltipText)
+    .attr('data-tooltip', tooltip.tooltipText)
     .text((d) => {
       if (d.data.description) { return `\n${d.data.description}`; }
       if (d.data.level) { return d.data.level; }
@@ -252,10 +260,10 @@ function settings() {
     if (node.x < x.min) x.min = node.x;
     if (node.x > x.max) x.max = node.x;
   });
-  const height = y.max + 150;
-  const width = Math.abs(x.min) + x.max + 100;
-  svg.attr('width', width);
-  svg.attr('height', height);
+  treeDimensions.height = y.max + 150;
+  treeDimensions.width = Math.abs(x.min) + x.max + 100;
+  svg.attr('width', treeDimensions.width);
+  svg.attr('height', treeDimensions.height);
   gNode.attr('transform', `translate(${Math.abs(x.min) + 50}, ${60})`);
   gLink.attr('transform', `translate(${Math.abs(x.min) + 50}, ${60})`);
 }
@@ -365,10 +373,39 @@ function treeBuilding(source) {
   });
 }
 
+function zooming() {
+  document.querySelector('.zoom').querySelector('img').remove();
+  if (curScale !== 1) {
+    curScale *= 1 / curScale;
+    tooltip.setScale(curScale);
+    document.querySelector('.svg').style.zoom = curScale;
+    curScale = 1;
+    d3.select('body').select('.zoom').append('img')
+      .attr('src', 'icons/minimize.png');
+  } else if (treeDimensions.height > treeDimensions.width) {
+    curScale = screen.height / treeDimensions.height;
+    tooltip.setScale(curScale);
+    document.querySelector('.svg').style.zoom = curScale;
+    d3.select('body').select('.zoom').append('img')
+      .attr('src', 'icons/maximize.png');
+  } else {
+    curScale = screen.width / treeDimensions.width;
+    tooltip.setScale(curScale);
+    document.querySelector('.svg').style.zoom = curScale;
+    d3.select('body').select('.zoom').append('img')
+      .attr('src', 'icons/maximize.png');
+  }
+}
+
 /**
  * Function to start tree drawing
  */
 function draw() {
+  d3.select('body').append('div')
+    .attr('class', 'zoom')
+    .on('click', zooming)
+    .append('img')
+    .attr('src', 'icons/minimize.png');
   d3.json(jsonFile, (err, json) => {
     if (err) {
       throw err;

@@ -12,3 +12,5 @@ additions/parse.js
 !settings/alertSettings.json
 !.eslintrc.js
 !README.md
+!/icons
+!/icons/*.*

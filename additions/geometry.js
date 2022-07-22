@@ -34,6 +34,72 @@ function any() {
   return `M${-35},${-10}C${-35},${10},${35},${10},${35},${-10}C${35},${-28},${-35},${-28},${-35},${-10}`;
 }
 
+function zoomIn(svg) {
+  svg.append('line')
+    .attr('x1', 0)
+    .attr('y1', 10)
+    .attr('x2', 25)
+    .attr('y2', 10);
+  svg.append('line')
+    .attr('x1', 25)
+    .attr('y1', 10)
+    .attr('x2', 15)
+    .attr('y2', 20);
+  svg.append('line')
+    .attr('x1', 25)
+    .attr('y1', 10)
+    .attr('x2', 15)
+    .attr('y2', 0);
+  svg.append('line')
+    .attr('x1', 60)
+    .attr('y1', 10)
+    .attr('x2', 35)
+    .attr('y2', 10);
+  svg.append('line')
+    .attr('x1', 35)
+    .attr('y1', 10)
+    .attr('x2', 45)
+    .attr('y2', 20);
+  svg.append('line')
+    .attr('x1', 35)
+    .attr('y1', 10)
+    .attr('x2', 45)
+    .attr('y2', 0);
+}
+
+function zoomOut(svg) {
+  svg.append('line')
+    .attr('x1', 0)
+    .attr('y1', 10)
+    .attr('x2', 25)
+    .attr('y2', 10);
+  svg.append('line')
+    .attr('x1', 0)
+    .attr('y1', 10)
+    .attr('x2', 10)
+    .attr('y2', 20);
+  svg.append('line')
+    .attr('x1', 0)
+    .attr('y1', 10)
+    .attr('x2', 10)
+    .attr('y2', 0);
+  svg.append('line')
+    .attr('x1', 60)
+    .attr('y1', 10)
+    .attr('x2', 35)
+    .attr('y2', 10);
+  svg.append('line')
+    .attr('x1', 60)
+    .attr('y1', 10)
+    .attr('x2', 50)
+    .attr('y2', 20);
+  svg.append('line')
+    .attr('x1', 60)
+    .attr('y1', 10)
+    .attr('x2', 50)
+    .attr('y2', 0);
+}
+
 /**
  * Function to distribut pathes
  * @param {*} d - node
@@ -48,5 +114,5 @@ function distribut(d) {
 }
 
 export default {
-  distribut, and, or, not, any,
+  distribut, and, or, not, any, zoomIn, zoomOut,
 };
