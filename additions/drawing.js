@@ -174,7 +174,10 @@ function nodeAdditions(node) {
     .attr('style', (d) => {
       if (d.data.field) {
         const alertSet = alertSettings.state_info[d.data.alert];
-        return `border:${alertSet.color}; `
+        let borderColor;
+        if (alertSet.color === 'white') borderColor = 'lightGrey';
+        else borderColor = alertSet.color;
+        return `border:1px solid ${borderColor}; `
           + `background-color:${alertSet.color}; `
           + `color:${alertSet.textColor}`;
       }
