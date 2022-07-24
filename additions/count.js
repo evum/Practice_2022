@@ -16,13 +16,13 @@ function logOperations(value, operator, control = 0) {
   const numberControl = Number(control);
   switch (operator) {
     case 'AND':
-      flag = 1;
-      if (value.indexOf(0) !== -1) flag = 0;
+      flag = 0;
+      if (value.indexOf(0) === -1) flag = 1;
       return flag;
 
     case 'OR':
       flag = 0;
-      if (value.indexOf(1) !== -1) flag = 1;
+      value.forEach((item) => { if (item === 1) flag = 1; });
       return flag;
     case 'NOT':
       if (numberValue === 1) return 0;
@@ -37,16 +37,6 @@ function logOperations(value, operator, control = 0) {
       });
       if (counter >= numberControl) flag = 1;
       return flag;
-    case '<':
-      if (value < control) { return 1; } return 0;
-    case '>':
-      if (numberValue > numberControl) { return 1; } return 0;
-    case '==':
-      if (numberValue === numberControl) { return 1; } return 0;
-    case 'in':
-      flag = 0;
-      Array.from(control).forEach((item) => { if (numberValue === Number(item)) { flag = 1; } });
-      return flag;
     default:
       return -1;
   }
@@ -59,8 +49,7 @@ function logOperations(value, operator, control = 0) {
  */
 function counting(node) {
   const curNode = node;
-  if (curNode.rules == null) {
-    curNode.count = logOperations(curNode.number, curNode.operator, curNode.value);
+  if (curNode.rules === undefined || curNode.rules === null) {
     return;
   }
   curNode.rules.forEach((item) => {
@@ -68,12 +57,13 @@ function counting(node) {
   });
   const mas = [];
   curNode.rules.forEach((item) => {
-    mas.push(Number(item.count));
+    if (item.comment) mas.push(Number(item.rules[0].count));
+    else mas.push(Number(item.count));
   });
   if (curNode.value !== undefined) {
-    curNode.count = logOperations(mas, curNode.condition, curNode.value);
+    curNode.count = String(logOperations(mas, curNode.condition, curNode.value));
   } else {
-    curNode.count = logOperations(mas, curNode.condition);
+    curNode.count = String(logOperations(mas, curNode.condition));
   }
 }
 

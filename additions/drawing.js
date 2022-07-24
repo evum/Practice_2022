@@ -122,7 +122,7 @@ function nodeAdditions(node) {
     .attr('d', geometry.distribut)
     .attr('fill', 'white')
     .attr('class', (d) => {
-      if (d.data.condition && Number(d.data.count) === 1) { return 'nodePath on'; }
+      if (d.data.condition && d.data.count === '1') { return 'nodePath on'; }
       if (d.data.condition) { return 'nodePath off'; }
       return '';
     });
@@ -153,7 +153,7 @@ function nodeAdditions(node) {
         let counterTrue = 0;
         let counter = 0;
         d.data.rules.forEach((item) => {
-          if (item.count === 1) counterTrue += 1;
+          if (item.count === '1') counterTrue += 1;
           counter += 1;
         });
         return `(${counterTrue} из ${counter})`;
@@ -180,7 +180,7 @@ function nodeAdditions(node) {
       return '-75px';
     })
     .attr('style', (d) => {
-      if (d.data.field) {
+      if (d.data.field && d.data.out === 'state') {
         const alertSet = alertSettings.state_info[d.data.alert];
         let borderColor;
         if (alertSet.color === 'white') borderColor = 'lightGrey';
@@ -188,6 +188,9 @@ function nodeAdditions(node) {
         return `border:1px solid ${borderColor}; `
           + `background-color:${alertSet.color}; `
           + `color:${alertSet.textColor}`;
+      }
+      if (d.data.field) {
+        return 'border: 2px solid black; background-color: white';
       }
       return '';
     });
@@ -223,7 +226,8 @@ function nodeAdditions(node) {
     .append('text')
     .attr('data-tooltip', tooltip.tooltipText)
     .text((d) => {
-      if (d.data.description) { return `\n${d.data.description}`; }
+      if (d.data.description && d.data.out === 'value') { return `value: ${d.data.count}\n${d.data.description}`; }
+      if (d.data.description && d.data.out === 'state') { return `state: ${d.data.count}\n${d.data.description}`; }
       if (d.data.level) { return d.data.level; }
       return '';
     })
@@ -236,7 +240,7 @@ function nodeAdditions(node) {
   /* Drawing node`s circle */
   node.append('circle')
     .attr('r', (d) => { if (d.data.field) { return 5; } return 0; })
-    .attr('fill', (d) => { if (d.data.count === 1) { return 'red'; } return 'white'; })
+    .attr('fill', (d) => { if (d.data.count === '1') { return 'red'; } return 'white'; })
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('class', 'circle');
@@ -312,7 +316,7 @@ function treeBuilding(source) {
         return;
       }
       if (curD.children === null) {
-        curD.children = curD.tempChildren;
+        curD.children = curD.tempChildren.slice();
       } else {
         curD.children = null;
       }
@@ -330,7 +334,6 @@ function treeBuilding(source) {
           elem.remove();
         });
       }
-
       treeBuilding(curD);
     });
 
@@ -344,7 +347,7 @@ function treeBuilding(source) {
       return diagonal({ source: o, target: o });
     })
     .attr('class', (d) => {
-      if (d.target.data.count === 1 || (d.target.data.comment && d.target.children[0].data.count === 1)) return 'linkOn';
+      if (d.target.data.count === '1' || (d.target.data.comment && d.target.children[0].data.count === '1')) return 'linkOn';
       return 'linkOff';
     });
 
@@ -371,6 +374,36 @@ function treeBuilding(source) {
     curD.x0 = d.x;
     curD.y0 = d.y;
   });
+}
+
+function hidingChildren(node) {
+  const curNode = node;
+  if (curNode.children) {
+    curNode.children.forEach((child, index) => {
+      if (child.data.count === '0') {
+        curNode.children[index] = null;
+      }
+      if (child.data.comment !== undefined && child.children[0].data.count === '0') {
+        curNode.children[index] = null;
+      }
+    });
+  }
+  if (curNode.children) {
+    curNode.children = curNode.children.filter((element) => element !== null);
+    if (curNode.children.length === 0) {
+      curNode.children = null;
+    }
+  }
+  if (curNode.children !== null && curNode.children !== undefined) {
+    curNode.children.forEach((child) => {
+      hidingChildren(child);
+    });
+  }
+}
+
+function hiding() {
+  hidingChildren(globalNodes);
+  treeBuilding(globalNodes);
 }
 
 function zooming() {
@@ -406,6 +439,12 @@ function draw() {
     .on('click', zooming)
     .append('img')
     .attr('src', 'icons/minimize.png');
+  d3.select('body').append('div')
+    .attr('class', 'hide')
+    .on('click', hiding)
+    .append('body')
+    .html('Hide')
+    .attr('x', -10);
   d3.json(jsonFile, (err, json) => {
     if (err) {
       throw err;
@@ -417,10 +456,10 @@ function draw() {
       const curD = d;
       curD.id = i;
       if (curD.children !== undefined) {
-        curD.tempChildren = Object.assign(curD.children);
+        curD.tempChildren = curD.children.slice();
       }
     });
-    treeBuilding(nodes);
+    treeBuilding(globalNodes);
   });
 }
 

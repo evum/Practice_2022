@@ -18,8 +18,9 @@
                             "field": "давление1",
                             "type": "string",
                             "description": "датчик давления 1",
-                            "alert": "1",
-                            "number": "1"
+                            "number": "2",
+                            "alert": "0",
+                            "count": "0"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -33,7 +34,8 @@
                             "field": "давление2",
                             "description": "датчик давления 2",
                             "alert": "2",
-                            "number": "1"
+                            "number": "1",
+                            "count": "1"
                         }]
                     }, {
                         
@@ -50,7 +52,8 @@
                                         "type": "string",
                                         "description": "датчик давления 1",
                                         "alert": "1",
-                                        "number": "1"
+                                        "number": "1",
+                                        "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -64,7 +67,8 @@
                                         "field": "давление2",
                                         "description": "датчик давления 2",
                                         "alert": "2",
-                                        "number": "1"
+                                        "number": "2",
+                                        "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -78,7 +82,8 @@
                                         "id": "3",
                                         "description": "датчик давления 3",
                                         "alert": "3",
-                                        "number": "5"
+                                        "number": "5",
+                                        "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -92,7 +97,8 @@
                                         "value": "[2, 3]",
                                         "description": "датчик давления 4",
                                         "alert": "0",
-                                        "number": "1"
+                                        "number": "1",
+                                        "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -106,7 +112,8 @@
                                         "subalert": "rtn-subalert",
                                         "description": "датчик давления 5",
                                         "alert": "4",
-                                        "number": "1"
+                                        "number": "1",
+                                        "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -120,7 +127,8 @@
                                     "value": "[2, 3]",
                                     "description": "датчик давления 6",
                                     "alert": "5",
-                                    "number": "1"
+                                    "number": "1",
+                                    "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -134,7 +142,8 @@
                                         "type": "string",
                                         "description": "датчик давления 7",
                                         "alert": "6",
-                                        "number": "1"
+                                        "number": "1",
+                                        "count": "1"
                                     }]
                                 }, {
                                     "comment":"Возгорание двигателя",
@@ -148,7 +157,8 @@
                                         "out": "state",
                                         "description": "датчик давления 8",
                                         "alert": "6",
-                                        "number": "1"
+                                        "number": "1",
+                                        "count": "1"
                                     }]
                                 }],
                                 "condition": "OR"
@@ -164,7 +174,8 @@
                                     "out": "state",
                                     "description": "датчик разрушения двигателя 1",
                                     "alert": "7",
-                                    "number": "1"
+                                    "number": "1",
+                                    "count": "1"
                                 }, {
                                     "comment":"Возгорание двигателя",
                                     "rules": [{
@@ -180,7 +191,8 @@
                                                 "value": "[2, 3, 5]",
                                                 "description": "датчик температуры 1",
                                                 "alert": "1",
-                                                "number": "1"
+                                                "number": "1",
+                                                "count": "1"
                                             }, {
                                                 "condition": "OR",
                                                 "rules": [{
@@ -194,8 +206,8 @@
                                                             "field": "давление9",
                                                             "subalert": "rtn-subalert",
                                                             "description": "датчик давления 9",
-                                                            "alert": "1",
-                                                            "number": "1"
+                                                            "number": "1",
+                                                            "count": "1"
                                                         }, {
                                                             "operator": "==",
                                                             "value": "1",
@@ -205,8 +217,8 @@
                                                             "field": "давление10",
                                                             "subalert": "rtn-subalert",
                                                             "description": "датчик давления 10",
-                                                            "alert": "1",
-                                                            "number": "1"
+                                                            "number": "1",
+                                                            "count": "1"
                                                         }],
                                                         "condition": "AND"
                                                     }, {
@@ -219,8 +231,8 @@
                                                             "type": "string",
                                                             "subalert": "rtn-subalert",
                                                             "description": "датчик температуры 2",
-                                                            "alert": "2",
-                                                            "number": "1"
+                                                            "number": "1",
+                                                            "count": "1"
                                                         }, {
                                                             "operator": "<",
                                                             "value": "300",
@@ -230,8 +242,8 @@
                                                             "type": "string",
                                                             "subalert": "rtn-subalert",
                                                             "description": "датчик температуры 3",
-                                                            "alert": "2",
-                                                            "number": "0"
+                                                            "number": "0",
+                                                            "count": "1"
                                                         }],
                                                         "condition": "AND"
                                                     }, {
@@ -243,8 +255,8 @@
                                                         "value": "120",
                                                         "out": "value",
                                                         "description": "датчик давления 11",
-                                                        "alert": "2",
-                                                        "number": "0"
+                                                        "number": "0",
+                                                        "count": "1"
                                                     }],
                                                     "condition": "OR"
                                                 }, {
@@ -258,8 +270,8 @@
                                                         "value": "87",
                                                         "out": "value",
                                                         "description": "датчик температуры 4",
-                                                        "alert": "2",
-                                                        "number": "0"
+                                                        "number": "0",
+                                                        "count": "1"
                                                     }, {
                                                         "out": "value",
                                                         "operator": ">",
@@ -269,8 +281,8 @@
                                                         "field": "температура5",
                                                         "id": "17",
                                                         "description": "датчик температуры 5",
-                                                        "alert": "2",
-                                                        "number": "0"
+                                                        "number": "0",
+                                                        "count": "1"
                         
                                                     }, {
                                                         "subalert": "rtn-subalert",
@@ -281,8 +293,8 @@
                                                         "value": "80",
                                                         "operator": ">",
                                                         "description": "датчик температуры 6",
-                                                        "alert": "2",
-                                                        "number": "1"
+                                                        "number": "1",
+                                                        "count": "1"
                                                     }, {
                                                         "out": "value",
                                                         "value": "8.5",
@@ -292,8 +304,8 @@
                                                         "type": "string",
                                                         "id": "19",
                                                         "description": "датчик давления 7",
-                                                        "alert": "2",
-                                                        "number": "0"
+                                                        "number": "0",
+                                                        "count": "1"
                                                     }, {
                                                         "out": "value",
                                                         "operator": ">",
@@ -303,8 +315,8 @@
                                                         "field": "давление8",
                                                         "id": "20",
                                                         "description": "датчик давления 8",
-                                                        "alert": "2",
-                                                        "number": "1"
+                                                        "number": "1",
+                                                        "count": "1"
             
                                                     }]
                                                 }]
@@ -328,7 +340,8 @@
                             "value": "[2, 3]",
                             "description": "датчик давления 4",
                             "alert": "0",
-                            "number": "1"
+                            "number": "1",
+                            "count": "0"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -342,7 +355,8 @@
                             "subalert": "rtn-subalert",
                             "description": "датчик давления 5",
                             "alert": "4",
-                            "number": "1"
+                            "number": "1",
+                            "count": "0"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -356,7 +370,8 @@
                         "value": "[2, 3]",
                         "description": "датчик давления 6",
                         "alert": "5",
-                        "number": "1"
+                        "number": "1",
+                        "count": "0"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -370,7 +385,8 @@
                             "type": "string",
                             "description": "датчик давления 7",
                             "alert": "6",
-                            "number": "1"
+                            "number": "1",
+                            "count": "0"
                         }]
                     }, {
                         "comment":"Возгорание двигателя",
@@ -384,7 +400,8 @@
                             "out": "state",
                             "description": "датчик давления 8",
                             "alert": "6",
-                            "number": "1"
+                            "number": "1",
+                            "count": "0"
                         }]
                     }],
                     "condition": "OR"
@@ -400,7 +417,8 @@
                         "out": "state",
                         "description": "датчик разрушения двигателя 1",
                         "alert": "7",
-                        "number": "1"
+                        "number": "1",
+                        "count": "0"
                     }, {
                         "comment":"Возгорание двигателя",
                         "rules": [{
@@ -430,7 +448,6 @@
                                                 "field": "давление9",
                                                 "subalert": "rtn-subalert",
                                                 "description": "датчик давления 9",
-                                                "alert": "1",
                                                 "number": "1"
                                             }, {
                                                 "operator": "==",
@@ -441,8 +458,8 @@
                                                 "field": "давление10",
                                                 "subalert": "rtn-subalert",
                                                 "description": "датчик давления 10",
-                                                "alert": "1",
-                                                "number": "1"
+                                                "number": "1",
+                                                "count": "0"
                                             }],
                                             "condition": "AND"
                                         }, {
@@ -455,8 +472,8 @@
                                                 "type": "string",
                                                 "subalert": "rtn-subalert",
                                                 "description": "датчик температуры 2",
-                                                "alert": "2",
-                                                "number": "1"
+                                                "number": "1",
+                                                "count": "0"
                                             }, {
                                                 "operator": "<",
                                                 "value": "300",
@@ -466,8 +483,8 @@
                                                 "type": "string",
                                                 "subalert": "rtn-subalert",
                                                 "description": "датчик температуры 3",
-                                                "alert": "2",
-                                                "number": "0"
+                                                "number": "0",
+                                                "count": "1"
                                             }],
                                             "condition": "AND"
                                         }, {
@@ -479,7 +496,6 @@
                                             "value": "120",
                                             "out": "value",
                                             "description": "датчик давления 11",
-                                            "alert": "2",
                                             "number": "0"
                                         }],
                                         "condition": "OR"
@@ -505,7 +521,6 @@
                                             "field": "температура5",
                                             "id": "17",
                                             "description": "датчик температуры 5",
-                                            "alert": "2",
                                             "number": "0"
             
                                         }, {
@@ -517,7 +532,6 @@
                                             "value": "80",
                                             "operator": ">",
                                             "description": "датчик температуры 6",
-                                            "alert": "2",
                                             "number": "1"
                                         }, {
                                             "out": "value",
@@ -528,7 +542,6 @@
                                             "type": "string",
                                             "id": "19",
                                             "description": "датчик давления 7",
-                                            "alert": "2",
                                             "number": "0"
                                         }, {
                                             "out": "value",
@@ -539,7 +552,6 @@
                                             "field": "давление8",
                                             "id": "20",
                                             "description": "датчик давления 8",
-                                            "alert": "2",
                                             "number": "1"
 
                                         }]
