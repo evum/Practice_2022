@@ -69,6 +69,10 @@ function bigHelperAdd(d) {
      Результат: ${d.data.count} <br>
      Значение: ${d.data.number} <br>
      Тип значения: ${d.data.out}`);
+  d3.select('body').select('.bigHelper')
+    .append('img')
+    .attr('src', 'icons/close.png')
+    .on('click', () => d3.selectAll('.bigHelper').remove());
 }
 
 /**
@@ -226,8 +230,8 @@ function nodeAdditions(node) {
     .append('text')
     .attr('data-tooltip', tooltip.tooltipText)
     .text((d) => {
-      if (d.data.description && d.data.out === 'value') { return `value: ${d.data.count}\n${d.data.description}`; }
-      if (d.data.description && d.data.out === 'state') { return `state: ${d.data.count}\n${d.data.description}`; }
+      if (d.data.description && d.data.out === 'value') { return `value: ${d.data.number}\n${d.data.description}`; }
+      if (d.data.description && d.data.out === 'state') { return `state: ${d.data.number}\n${d.data.description}`; }
       if (d.data.level) { return d.data.level; }
       return '';
     })
