@@ -380,6 +380,10 @@ function treeBuilding(source) {
   });
 }
 
+/**
+ * Iteration function to realize nodes hiding
+ * @param {*} node - node, which we check
+ */
 function hidingChildren(node) {
   const curNode = node;
   if (curNode.children) {
@@ -405,10 +409,17 @@ function hidingChildren(node) {
   }
 }
 
+/**
+ * Function to hide unactivated nodes
+ */
 function hiding() {
   hidingChildren(globalNodes);
   treeBuilding(globalNodes);
 }
+
+/**
+ * Function to zoom page to screen size
+ */
 
 function zooming() {
   document.querySelector('.zoom').querySelector('img').remove();
@@ -434,6 +445,34 @@ function zooming() {
   }
 }
 
+function deepEqual(children, tempChildren) {
+  if (children === undefined || tempChildren === undefined) return true;
+  if (children === null) return false;
+  for (let i = 0; i < tempChildren.length; i += 1) {
+    if (children[i] !== tempChildren[i]) return false;
+  }
+  return true;
+}
+
+function showingChildren(node) {
+  const curNode = node;
+  if (!deepEqual(curNode.children, curNode.tempChildren)) {
+    curNode.children = null;
+    document.getElementById(curNode.id).setAttribute('name', 'bad');
+    const machineEvent = new Event('click', { bubbles: true });
+    document.getElementById(curNode.id).dispatchEvent(machineEvent);
+  }
+  if (curNode.children) {
+    curNode.children.forEach((child) => showingChildren(child));
+  }
+}
+
+function showing() {
+  showingChildren(globalNodes);
+  document.querySelectorAll('.plus').forEach((flag) => flag.remove());
+  treeBuilding(globalNodes);
+}
+
 /**
  * Function to start tree drawing
  */
@@ -447,8 +486,12 @@ function draw() {
     .attr('class', 'hide')
     .on('click', hiding)
     .append('body')
-    .html('Hide')
-    .attr('x', -10);
+    .html('Hide unactive');
+  d3.select('body').append('div')
+    .attr('class', 'show')
+    .on('click', showing)
+    .append('body')
+    .html('Show all');
   d3.json(jsonFile, (err, json) => {
     if (err) {
       throw err;

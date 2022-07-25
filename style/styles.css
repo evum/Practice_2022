@@ -1,5 +1,5 @@
 Div::-webkit-scrollbar {
-	width: 0px;
+	width: 1px;
 	height: 0px;
 	background-color: black;
 }
@@ -37,7 +37,7 @@ Div::-webkit-scrollbar {
 /* Style for sensor node */
 .dat {
 	border-radius: 10px;
-	width: 80px;
+	width: 82px;
 	height: 4em;
 	text-anchor: middle;
 	position: relative;
@@ -122,7 +122,7 @@ Div::-webkit-scrollbar {
 	position: relative;
 	overflow: auto;
 	width: 100%;
-	height: 65%;
+	height: 63%;
 	
 }
 
@@ -303,7 +303,7 @@ Div::-webkit-scrollbar {
 	background-color: lightgray;
 	position: fixed;
 	top: 6px;
-	left: 1%;
+	left: 6px;
 	cursor: pointer;
 }
 
@@ -311,20 +311,24 @@ Div::-webkit-scrollbar {
 	position: fixed;
 	border: 1px solid black;
 	height: 24px;
-	width: 24px;
-	top: 36px;
-	left: 1%;
+	width: auto;
+	display: inline-block;
+	top: 6px;
+	left: 36px;
 	cursor: pointer;
 	border-radius: 5px;
 	background-color: lightgray;
+	padding-right: 3px;
 }
 
 .hide body {
+	display: inline-block;
 	width: 100%;
 	height: 100%;
 	top: 0%;
-	font-size: 11px;
-	margin: 5px 1px;
+	font-size: 16px;
+	margin: 2px 2px 2px;
+	text-align: center;
 }
 
 .bigHelper img {
@@ -334,4 +338,26 @@ Div::-webkit-scrollbar {
 	cursor: pointer;
 	width: 15px;
 	height: 15px;
+}
+
+.show {
+	position: fixed;
+	display: inline-block;
+	top: 6px;
+	border: 1px solid black;
+	border-radius: 5px;
+	background-color: lightgray;
+	width: auto;
+	height: 24px;
+	cursor: pointer;
+	left: 140px;
+}
+
+.show body {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	top: 0%;
+	font-size: 16px;
+	margin: 2px 2px;
 }
